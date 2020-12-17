@@ -1,0 +1,1 @@
+# Java API for Thing Descriptions of WoT (JDT)
