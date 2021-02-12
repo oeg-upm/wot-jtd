@@ -5,10 +5,11 @@
   <version>0.1.0</version>
  
 	<properties>
+	    <maven.compiler.target>1.8</maven.compiler.target>
+    		<maven.compiler.source>1.8</maven.compiler.source>
 	    <maven.compiler.release>14</maven.compiler.release>
 	</properties>
-  
-  
+ 
   <dependencies>
   	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
 	<dependency>
@@ -84,6 +85,15 @@
 	    <version>3.17.0</version>
 	    <type>pom</type>
 	</dependency>	
+	
+	<!-- https://mvnrepository.com/artifact/junit/junit -->
+	<dependency>
+	    <groupId>junit</groupId>
+	    <artifactId>junit</artifactId>
+	    <version>4.12</version>
+	    <scope>test</scope>
+	</dependency>
+		
   </dependencies>
   
   
