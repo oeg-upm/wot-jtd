@@ -98,10 +98,10 @@
   </dependencies>
   
   
-  <!-- <scm>
+  <scm>
   	<developerConnection>scm:git:https://github.com/AndreaCimminoArriaga/wot-jtd.git</developerConnection>
     <tag>wot-jtd-0.1.0</tag>
-  </scm> -->
+  </scm>
   
   <distributionManagement>
   <repository>
