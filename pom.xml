@@ -8,7 +8,6 @@
 	    <maven.compiler.target>1.8</maven.compiler.target>
     		<maven.compiler.source>1.8</maven.compiler.source>
 	    <maven.compiler.release>14</maven.compiler.release>
-	    <project.scm.id>github</project.scm.id>
 	</properties>
  
   <dependencies>
@@ -97,19 +96,6 @@
 		
   </dependencies>
   
-  
-  <scm>
-  	<developerConnection>scm:git:https://github.com/AndreaCimminoArriaga/wot-jtd.git</developerConnection>
-    <tag>wot-jtd-0.1.0</tag>
-  </scm>
-  
-  <distributionManagement>
-  <repository>
-    <id>github</id>
-    <name>GitHub</name>
-    <url>https://maven.pkg.github.com/AndreaCimminoArriaga/wot-jtd</url>  
-  </repository>
-</distributionManagement>
 
   <build>
     <plugins>
