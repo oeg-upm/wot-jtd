@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.wot</groupId>
+  <artifactId>wot-jtd</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+ 
+<properties>
+    <maven.compiler.release>14</maven.compiler.release>
+</properties>
+  
+  <dependencies>
+  	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-core</artifactId>
+	    <version>2.12.0</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-annotations</artifactId>
+	    <version>2.12.0</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.12.0</version>
+	</dependency>
+	
+    <dependency> 
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>6.0.13.Final</version>
+    </dependency> 
+    <dependency> 
+        <groupId>org.glassfish</groupId>
+        <artifactId>javax.el</artifactId>
+        <version>3.0.0</version>
+     </dependency>
+     
+     <dependency>
+	    <groupId>javax.validation</groupId>
+	    <artifactId>validation-api</artifactId>
+	     <version>2.0.1.Final</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+	<dependency>
+	    <groupId>com.google.code.gson</groupId>
+	    <artifactId>gson</artifactId>
+	    <version>2.8.6</version>
+	</dependency>
+     
+     <dependency>
+	  <groupId>org.apache.commons</groupId>
+	  <artifactId>commons-lang3</artifactId>
+	  <version>3.11</version>
+	</dependency>
+	
+	<dependency>
+	   <groupId>commons-logging</groupId>
+	   <artifactId>commons-logging</artifactId>
+	   <version>1.2</version>
+	</dependency>
+     
+     <!-- JSON-LD -->
+   <dependency>
+	    <groupId>com.apicatalog</groupId>
+	    <artifactId>titanium-json-ld</artifactId>
+	    <version>1.0.0</version>
+	</dependency>
+	 <dependency>
+        <groupId>org.glassfish</groupId>
+        <artifactId>jakarta.json</artifactId>
+        <version>2.0.0</version>
+    </dependency>
+    <!-- jena -->
+	<!-- https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs -->
+	<dependency>
+	    <groupId>org.apache.jena</groupId>
+	    <artifactId>apache-jena-libs</artifactId>
+	    <version>3.17.0</version>
+	    <type>pom</type>
+	</dependency>
+
+			
+	
+  </dependencies>
+</project>
