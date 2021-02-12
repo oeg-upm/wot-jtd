@@ -87,6 +87,10 @@
   </dependencies>
   
   
+  <scm>
+  	<developerConnection>scm:git:https://github.com/oeg-upm/wot-jtd.git</developerConnection>
+  </scm>
+
   <build>
     <plugins>
       <plugin>
