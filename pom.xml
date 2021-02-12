@@ -100,7 +100,7 @@
   
   <scm>
   	<developerConnection>scm:git:https://github.com/oeg-upm/wot-jtd.git</developerConnection>
-    <tag>wot-jtd-0.1.0</tag>
+    <tag>wot-jtd-0.0.2</tag>
   </scm>
   
   <distributionManagement>
