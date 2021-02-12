@@ -20,10 +20,10 @@ jobs:
       - name: Step 1 - Checkout project
         uses: actions/checkout@v2
 
-      - name: Step2 - Setup Java JDK
-        uses: actions/setup-java@v1.4.2
+      - name: Step2 - Setup Java JDK 14-ea
+        uses: actions/setup-java@v1
         with:
-          java-version: 14                    
+          java-version: 14-ea                    
           server-id: github  
 
       - name: Step3 - Configure Git user
