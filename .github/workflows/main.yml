@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Step 1 - Checkout main branch from github
+        uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Step 2 - Set up JDK 14-ea
+        uses: actions/setup-java@v1
+        with : 
+          java-version: 14-ea
+
+      - name: Step 3 - Have actions building the project
+        run: mvn -B package -DskipTests --file pom.xml
+        
+      - name: Step 4 - List all the files
+        run: ls -la
+        
+      - name: Step 5 - List all target files
+        run: |
+         cd target
+         ls -la
