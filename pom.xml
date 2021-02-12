@@ -99,7 +99,7 @@
   
   
   <scm>
-  	<developerConnection>scm:git:https://github.com/oeg-upm/wot-jtd.git</developerConnection>
+  	<developerConnection>scm:git:https://github.com/AndreaCimminoArriaga/wot-jtd.git</developerConnection>
     <tag>wot-jtd-0.1.0</tag>
   </scm>
   
@@ -107,7 +107,7 @@
   <repository>
     <id>github</id>
     <name>GitHub</name>
-    <url>https://maven.pkg.github.com/oeg-upm/wot-jtd</url>  
+    <url>https://maven.pkg.github.com/AndreaCimminoArriaga/wot-jtd</url>  
   </repository>
 </distributionManagement>
 
