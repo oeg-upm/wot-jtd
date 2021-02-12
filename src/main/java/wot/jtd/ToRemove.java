@@ -10,7 +10,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import wot.jtd.exception.SchemaValidationException;
-import wot.jtd.model.Thing;
 
 public class ToRemove {
 

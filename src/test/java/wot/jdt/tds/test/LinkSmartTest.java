@@ -2,20 +2,8 @@ package wot.jdt.tds.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.Comparator;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-import java.lang.reflect.Field;
-import java.util.logging.Handler;
-
 import org.apache.jena.query.ARQ;
-import org.apache.jena.rdf.model.Model;
 import org.apache.jena.sparql.mgt.Explain.InfoLevel;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,7 +11,6 @@ import org.junit.Test;
 import com.apicatalog.jsonld.JsonLdError;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import wot.jtd.JTD;
