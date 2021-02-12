@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.wot</groupId>
   <artifactId>wot-jtd</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3-SNAPSHOT</version>
  
 	<properties>
 	    <maven.compiler.target>1.8</maven.compiler.target>
@@ -100,7 +100,7 @@
   
   <scm>
   	<developerConnection>scm:git:https://github.com/oeg-upm/wot-jtd.git</developerConnection>
-    <tag>wot-jtd-0.0.2</tag>
+    <tag>wot-jtd-0.1.0</tag>
   </scm>
   
   <distributionManagement>
