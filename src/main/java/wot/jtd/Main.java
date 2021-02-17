@@ -6,12 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import wot.jtd.model.Thing;
 
 public class Main {
 

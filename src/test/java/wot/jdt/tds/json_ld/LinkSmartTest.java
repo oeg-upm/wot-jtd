@@ -1,4 +1,4 @@
-package wot.jdt.tds.test;
+package wot.jdt.tds.json_ld;
 
 import java.io.File;
 import java.io.FileNotFoundException;

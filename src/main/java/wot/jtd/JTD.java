@@ -1,34 +1,13 @@
 package wot.jtd;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.apache.jena.datatypes.RDFDatatype;
-import org.apache.jena.graph.NodeFactory;
-import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.ResourceFactory;
-
-import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
-import com.apicatalog.jsonld.document.Document;
-import com.apicatalog.jsonld.document.JsonDocument;
-import com.apicatalog.rdf.RdfDataset;
-import com.apicatalog.rdf.RdfLiteral;
-import com.apicatalog.rdf.RdfNQuad;
-import com.apicatalog.rdf.RdfResource;
-import com.apicatalog.rdf.RdfValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +15,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import wot.jtd.exception.SchemaValidationException;
+import wot.jtd.model.Thing;
 import wot.jtd.vocabulary.Vocabulary;
 
 public class JTD {
@@ -145,7 +127,6 @@ public class JTD {
 	}
 	
 	private static void expandArray(JsonObject json, String key) {
-		
 		if(json.has(key) && !json.get(key).isJsonArray()) {
 			JsonElement element = json.get(key);
 			json.remove(key);
@@ -168,109 +149,15 @@ public class JTD {
 		JTD.showExternalValuesWarnings = showExternalValues;
 	}
 	
-	public static Model toRDF(JsonObject td) throws JsonLdError {
-		Model model = ModelFactory.createDefaultModel();
-		InputStream tdStream = new ByteArrayInputStream(td.toString().getBytes());
-		Document documentTD = JsonDocument.of(tdStream);
-		RdfDataset dataset = JsonLd.toRdf(documentTD).get();
-		Map<String,Resource> existingBlankNodes = new HashMap<>();
-		dataset.toList().forEach(triple -> populateModel(triple, model, existingBlankNodes));
-		return model;
-	}
 
-	/*private static void populateModel(RdfNQuad triple, Model model) {
-		StringBuilder line = new StringBuilder();
-		line.append(stringValueOf(triple.getSubject())).append(" ");
-		line.append(stringValueOf(triple.getPredicate())).append(" ");
-		line.append(stringValueOf(triple.getObject())).append(" ");
-		
-		Optional<RdfResource> graph = triple.getGraphName();
-		if(graph.isPresent()) {
-			line.append(stringValueOf(graph.get()));
-		}
-		line.append(" .");
-		System.out.println(line.toString());
-		InputStream stream = new ByteArrayInputStream(line.toString().getBytes());
-		model.read(stream, "n3");
-	}
-
-	private static Object stringValueOf(RdfValue object) {
-		StringBuilder builder = new StringBuilder();
-		
-		if(object.isBlankNode() || (object.isIRI() && !object.getValue().startsWith("htt"))) {
-			builder.append(object.getValue());
-		}else if(object.isIRI()){
-			builder.append("<").append(object.getValue()).append(">");
-		}else if(object.isLiteral()) {
-			builder.append("\"").append(object.getValue()).append("\"");
-			String datatype = object.asLiteral().getDatatype();
-			Optional<String> lang = object.asLiteral().getLanguage();
-			if(lang.isPresent()) {
-				builder.append("@").append(lang.get());
-			}else if(datatype!=null) {
-				builder.append("^^").append(datatype);
-			}
-		}
-		return builder.toString();
-	}
-
-	private static String stringValueOf(RdfResource resource) {
-		StringBuilder builder = new StringBuilder();
-		if(!resource.isBlankNode()) {
-			builder.append("<").append(resource.toString()).append(">");
-		}else {
-			builder.append(resource.toString());
-		}
-		return builder.toString();
-	}*/
-	
-	
-	private static void populateModel(RdfNQuad triple, Model model, Map<String,Resource> existingBlankNodes) {
-		Resource subject = instantiateResource(triple.getSubject(), model, existingBlankNodes);
-		Property predicate = ResourceFactory.createProperty(triple.getPredicate().getValue());
-
-		RdfValue object = triple.getObject();
-		if(object.isIRI()) {
-			Resource objectJena = ResourceFactory.createResource(object.getValue());
-			model.add(subject, predicate, objectJena);
-		}else if(object.isBlankNode()){
-			Resource objectJena = instantiateBlankNode(object.getValue(), model, existingBlankNodes);
-			model.add(subject, predicate, objectJena);
-		}else if(object.isLiteral()) {
-			RdfLiteral literal = object.asLiteral();
-			Optional<String> lang = literal.getLanguage();
-			String datatype = literal.getDatatype();
-			Literal jenaLiteral = ResourceFactory.createPlainLiteral(literal.getValue());
-			if(lang.isPresent()) {
-				jenaLiteral = ResourceFactory.createLangLiteral(literal.getValue(), lang.get());
-			}else if(datatype!=null) {
-				RDFDatatype dt = NodeFactory.getType(datatype);
-				jenaLiteral = ResourceFactory.createTypedLiteral(literal.getValue(), dt);
-			}
-			model.add(subject, predicate, jenaLiteral);
-		}
-	}
-	
-	private static Resource instantiateResource(RdfResource resource, Model model, Map<String,Resource> existingBlankNodes) {
-		Resource instantiatedResource = null;
-		if(resource.isIRI()) {
-			instantiatedResource = ResourceFactory.createResource(resource.getValue());
-		}else {
-			instantiatedResource = instantiateBlankNode(resource.getValue(), model, existingBlankNodes);
-		}
-		return instantiatedResource;
-	}
-	
-	private static Resource instantiateBlankNode(String blankNode, Model model, Map<String,Resource> existingBlankNodes) {
-		Resource instantiatedResource = null;
-		if(!existingBlankNodes.containsKey(blankNode)) {
-			instantiatedResource =  model.createResource();
-			existingBlankNodes.put(blankNode, instantiatedResource);
-		}else {
-			instantiatedResource = existingBlankNodes.get(blankNode);
-		}
-		return instantiatedResource;
+	public static  Model toRDF(JsonObject td) throws JsonLdError {
+		RDFHandler handler = new RDFHandler();	
+		return handler.toRDF(td);
 	}
 	
 	
+	public static List<Thing> fromRDF(Model model) throws JsonLdError, IOException, SchemaValidationException {
+		RDFHandler handler = new RDFHandler();	
+		return handler.fromRDF(model);
+	}
 }
