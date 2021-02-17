@@ -408,9 +408,7 @@ public class Thing extends AbstractJTDObject{
 		return true;
 	}
 	
-	public Model toRDF() throws JsonLdError, JsonProcessingException {
-		return JTD.toRDF(this.toJson());
-	}
+
 	
 	/**
 	 * This method translates the TDs into RDF and then compares their isomorphism to check if they are equivalent
@@ -420,8 +418,8 @@ public class Thing extends AbstractJTDObject{
 	 * @throws JsonProcessingException 
 	 */
 	public boolean isEquivalent(JsonObject td) throws JsonProcessingException, JsonLdError {
-		Model model = this.toRDF();
-		Model tdModel = JTD.toRDF(td);
+		Model model = this.toRDF(this.toJson());
+		Model tdModel = this.toRDF(td);
 		return model.isIsomorphicWith(tdModel);
 	}
 

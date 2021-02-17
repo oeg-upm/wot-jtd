@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import org.apache.jena.rdf.model.Model;
+import com.apicatalog.jsonld.JsonLdError;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+
 import wot.jtd.JTD;
+import wot.jtd.RDFHandler;
 
 
 public class AbstractJTDObject {
@@ -51,6 +55,10 @@ public class AbstractJTDObject {
 	    return unknownProperties;
 	}
 	
+	public  Model toRDF(JsonObject td) throws JsonLdError {
+		RDFHandler handler = new RDFHandler();	
+		return handler.toRDF(td);
+	}
 	
 
 	
