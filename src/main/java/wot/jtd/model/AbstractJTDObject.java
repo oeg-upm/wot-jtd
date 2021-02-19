@@ -1,27 +1,55 @@
 package wot.jtd.model;
 
+import java.net.URI;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.apache.jena.rdf.model.Model;
 import com.apicatalog.jsonld.JsonLdError;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
-
 import wot.jtd.JTD;
 import wot.jtd.RDFHandler;
+import wot.jtd.annotations.RdfDatatypeProperty;
+import wot.jtd.vocabulary.Vocabulary;
 
 
-public class AbstractJTDObject {
+public abstract class AbstractJTDObject {
 
 	protected static final Logger LOGGER = Logger.getLogger(AbstractJTDObject.class.getName());
 	static {
 		LOGGER.setLevel(Level.WARNING);
 	}
+	
+	// Shared common attributes
+	@JsonProperty(Vocabulary.JSONLD_TYPE)
+	@RdfDatatypeProperty(value="https://www.w3.org/2019/wot/td#type")
+	protected Collection<String> type;
+	protected URI id;
+	
+
+	public Collection<String> getType() {
+		return type;
+	}
+	public void setType(Collection<String> type) {
+		this.type = type;
+	}
+	
+	public URI getId() {
+		return id;
+	}
+	public void setId(URI id) {
+		this.id = id;
+	}
+	
+	
 	
 	// Any other property outside the standard
 	protected Map<String,Object> unknownProperties = new HashMap<>();
@@ -87,7 +115,6 @@ public class AbstractJTDObject {
 			return false;
 		return true;
 	}
-	
 	
 	
 }

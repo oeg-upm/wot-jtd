@@ -5,9 +5,6 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import javax.persistence.EntityManager;
-import javax.persistence.spi.PersistenceProvider;
-
 import org.apache.jena.graph.Graph;
 import org.apache.jena.query.ARQ;
 import org.apache.jena.rdf.model.Model;
@@ -23,13 +20,10 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.google.gson.JsonObject;
-import com.hp.hpl.jena.ontology.OntModel;
 
-import io.fogsy.empire.core.empire.Empire;
-import io.fogsy.empire.pinto.MappingOptions;
-import io.fogsy.empire.pinto.RDFMapper;
 import thewebsemantic.Bean2RDF;
 import wot.jtd.JTD;
+import wot.jtd.RDFHandler;
 import wot.jtd.model.Thing;
 import wot.jtd.model.VersionInfo;
 
@@ -56,8 +50,25 @@ public class LinkSmartTest {
 
 			VersionInfo test = new VersionInfo();
 			test.setInstance("3.21");
-			org.eclipse.rdf4j.model.Model aGraph = RDFMapper.create().writeValue(test);
+			/*org.eclipse.rdf4j.model.Model aGraph = RDFMapper.create().writeValue(test);
 			aGraph.forEach(st -> System.out.println(st.getSubject()+" "+ st.getPredicate()+" "+st.getObject()));
+			
+			ValueFactory vf = SimpleValueFactory.getInstance();
+			IRI subject = vf.createIRI("tag:complexible:pinto:af626ae3c3aee94a4b3199d0392c5cf8");
+			IRI pred = vf.createIRI("http://www.w3.org/2011/http#method");
+			Literal obj = vf.createLiteral("GET");
+			IRI graph = null;
+			aGraph.add(subject, pred, obj, graph);
+			IRI objectType = vf.createIRI("https://www.w3.org/2019/wot/td#VersionInfo");
+			aGraph.remove(subject, RDF.TYPE, objectType, graph);
+			System.out.println("_--------------------__");
+			aGraph.forEach(st -> System.out.println(st.getSubject()+" "+ st.getPredicate()+" "+st.getObject()));
+			
+			VersionInfo version = RDFMapper.create().readValue(aGraph, VersionInfo.class);
+			System.out.println(version.toJson());*/
+			
+			RDFHandler.serialize(); 
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

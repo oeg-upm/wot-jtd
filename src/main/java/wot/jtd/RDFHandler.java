@@ -1,17 +1,24 @@
 package wot.jtd;
 
+import java.beans.PropertyDescriptor;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.graph.Graph;
@@ -23,6 +30,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.NodeIterator;
 import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.vocabulary.DC;
@@ -40,8 +48,11 @@ import com.apicatalog.rdf.RdfResource;
 import com.apicatalog.rdf.RdfValue;
 import com.google.gson.JsonObject;
 
+import wot.jtd.annotations.RdfDatatypeProperty;
+import wot.jtd.exception.RDFValidationException;
 import wot.jtd.exception.SchemaValidationException;
 import wot.jtd.model.Thing;
+import wot.jtd.model.VersionInfo;
 
 public class RDFHandler {
 
@@ -49,6 +60,37 @@ public class RDFHandler {
 
 	private static final Resource THING = ResourceFactory.createResource("https://www.w3.org/2019/wot/td#Thing");
 	private static final Property SECURITY_DEFINITIONS = ResourceFactory.createProperty("https://www.w3.org/2019/wot/td#securityDefinitions");
+	
+	
+	public static void serialize() {
+		VersionInfo version = new VersionInfo();
+
+		for (Field field: version.getClass().getSuperclass().getDeclaredFields()) {
+		    System.out.println(field.getName());
+		    if (field.isAnnotationPresent(RdfDatatypeProperty.class)) {
+		        System.out.print(" -- > "+getSerializedKey(field));
+		    }
+		}
+		for (Field field: version.getClass().getDeclaredFields()) {
+		    System.out.println(field.getName());
+		    if (field.isAnnotationPresent(RdfDatatypeProperty.class)) {
+		        System.out.print(" -- > "+getSerializedKey(field));
+		    }
+		}
+		
+    }
+
+    private static String getSerializedKey(Field field) {
+        String annotationValue = field.getAnnotation(RdfDatatypeProperty.class).value();
+
+        if (annotationValue.isEmpty()) {
+            return field.getName();
+        }
+        else {
+            return annotationValue;
+        }
+    }
+	
 	
 	public List<Thing> fromRDF(Model model) throws JsonLdError, IOException, SchemaValidationException {
 		List<Thing> things = new ArrayList<>();
@@ -112,15 +154,66 @@ public class RDFHandler {
 		}
 	}*/
 	
-	private Map<String,String> getLangElements(Resource resource, Model model, Property property){
-		Map<String,String> langElements = new HashMap<>();
-		NodeIterator iterator = model.listObjectsOfProperty(resource, property);
-		while(iterator.hasNext()) {
-			Literal literal = iterator.next().asLiteral();
-			if(literal.getLanguage()!=null)
-				langElements.put(literal.getLanguage(),literal.getString());
+	// 
+	
+	public static void fromRDF() {
+		VersionInfo thing = new VersionInfo();
+		
+		Method[] annotations = VersionInfo.class.getMethods();
+		for(int index=0; index < annotations.length; index++) {
+			Method annotation = annotations[index];
+			System.out.println(annotation.getName());
+			List<Annotation> annon = Arrays.asList(annotation.getAnnotations());
+			annon.forEach(elem -> System.out.println(elem));
 		}
-		return langElements;
+		/*PropertyDescriptor[] properties = PropertyUtils.getPropertyDescriptors(thing);
+		for(int index=0;index < properties.length; index++) {
+			PropertyDescriptor property = properties[index];
+			System.out.println(property.getDisplayName());
+			System.out.println(property.getName());
+			Method method = property.getPropertyType()
+			if (method.isAnnotationPresent(Init.class)) {
+	            method.setAccessible(true);
+	            method.invoke(object);
+	        }
+			for(Annotation anon: .getAnnotations()) {
+				System.out.println(anon);
+			}
+		}*/
+	}
+	
+	protected Literal extractUnitaryObjectLiteral(Model model, Resource subject, Property property) throws RDFValidationException {
+		Literal literal = null;
+		RDFNode object = extractUnitaryObject(model, subject, property);
+		if (object == null)
+			throw new RDFValidationException(concatStrings("The porperty ", property.toString(),
+					" must point to an existing literal, currently is not been used"));
+		if (object.isLiteral()) {
+			literal = object.asLiteral();
+		} else {
+			throw new RDFValidationException(concatStrings("The porperty ", property.toString(),
+					" must point to a literal, currently is pointing to a non-literal object"));
+		}
+
+		return literal;
+	}
+	
+	protected RDFNode extractUnitaryObject(Model model, Resource subject, Property property) throws RDFValidationException {
+		RDFNode node = null;
+		List<RDFNode> objects = model.listObjectsOfProperty(property).toList();
+		if(objects.size()>1) {
+			throw new RDFValidationException(concatStrings("The porperty ", property.toString()," is unitary but it was used more than once with the subject ", subject.toString()));
+		}else {
+			node = objects.get(0);
+		}
+		return node;
+	}
+	
+	protected String concatStrings(String ...message) {
+		StringBuilder builder = new StringBuilder();
+		for(int index =0; index < message.length; index++)
+			builder.append(message[index]);
+		return builder.toString();
 	}
 
 	

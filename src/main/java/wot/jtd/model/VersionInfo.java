@@ -3,21 +3,19 @@ package wot.jtd.model;
 import java.io.IOException;
 import java.util.Set;
 
-import javax.persistence.Entity;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonObject;
 
-import io.fogsy.empire.annotations.Namespaces;
-import io.fogsy.empire.annotations.RdfProperty;
-import io.fogsy.empire.annotations.RdfsClass;
 import wot.jtd.JTD;
+import wot.jtd.annotations.RdfDatatypeProperty;
 import wot.jtd.exception.SchemaValidationException;
 import wot.jtd.exception.VersionInfoValidationException;
 
@@ -26,14 +24,12 @@ import wot.jtd.exception.VersionInfoValidationException;
  * @see <a href="https://www.w3.org/TR/wot-thing-description/#versioninfo">VersionInfo WoT documentation</a>
  * @author Andrea Cimmino
  */
-@Namespaces({"td", "https://www.w3.org/2019/wot/td#"})
-@RdfsClass("td:VersionInfo")
-@Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VersionInfo extends AbstractJTDObject{
 
 	// -- attributes
-	@RdfProperty("td:instance")
+	//@RdfLiteralProperty//("https://www.w3.org/2019/wot/td#instance")
+	@RdfDatatypeProperty(value="https://www.w3.org/2019/wot/td#instance")
 	@Pattern(regexp = "^[0-9]\\.[0-9]\\.[0-9]$", message="The pattern of 'instance' must be three numbers separated by '.'; e.g., '1.0.3'")
 	@NotBlank(message = "The 'instance' must be a non-blak string that follows the semantic versioning pattern from https://semver.org/")
 	private String instance;
@@ -89,11 +85,14 @@ public class VersionInfo extends AbstractJTDObject{
 	 * @throws IOException
 	 * @throws SchemaValidationException
 	 */
-	public VersionInfo fromJson(JsonObject json) throws IOException, SchemaValidationException {
+	public static VersionInfo fromJson(JsonObject json) throws IOException, SchemaValidationException {
 		VersionInfo versionInfo = (VersionInfo) JTD.instantiateFromJson(json, VersionInfo.class);
 		validate(versionInfo);
 		return versionInfo;
 	}
+	
+	
+	
 		
 	// -- getters and setters
 	

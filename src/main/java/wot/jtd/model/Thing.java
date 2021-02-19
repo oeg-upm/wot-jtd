@@ -45,10 +45,6 @@ public class Thing extends AbstractJTDObject{
 	@JsonProperty(Vocabulary.JSONLD_CONTEXT)
 	private Collection<String> context;
 	
-	@JsonProperty(Vocabulary.JSONLD_TYPE)
-	private Collection<String> type;
-	
-	private URI id;
 	@NotNull(message="the title of a td:Thing must not be null")
 	private String title;
 	private Map<String,String> titles;
@@ -154,19 +150,6 @@ public class Thing extends AbstractJTDObject{
 	
 
 
-	public Collection<String> getType() {
-		return type;
-	}
-	public void setType(Collection<String> type) {
-		this.type = type;
-	}
-	
-	public URI getId() {
-		return id;
-	}
-	public void setId(URI id) {
-		this.id = id;
-	}
 	public String getTitle() {
 		return title;
 	}

@@ -10,12 +10,14 @@ import javax.validation.ValidatorFactory;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonObject;
 
 import wot.jtd.JTD;
 import wot.jtd.exception.LinkValidationException;
 import wot.jtd.exception.SchemaValidationException;
+import wot.jtd.vocabulary.Vocabulary;
 
 
 /**
@@ -31,7 +33,7 @@ public class Link extends AbstractJTDObject{
 	@NotEmpty(message= "'href' must be a valid non-empty URI")
 	@NotNull(message = "'href' must be a valid non-null URI")
 	private URI href;
-	private String type; //from RFC2046
+	@JsonProperty(Vocabulary.TYPE)
 	private String mediaType; //from RFC2046
 	private String rel;
 	private URI anchor;
@@ -103,21 +105,6 @@ public class Link extends AbstractJTDObject{
 		this.href = href;
 	}
 	
-	/**
-	 * 
-	 * @return a mime type from the <a href="https://tools.ietf.org/html/rfc2046">RFC 2046</a> specification
-	 */
-	public String getType() {
-		return type;
-	}
-	
-	/**
-	 * 
-	 * @param type a valid mime type from the <a href="https://tools.ietf.org/html/rfc2046">RFC 2046</a> specification
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
 	
 	/**
 	 * 
