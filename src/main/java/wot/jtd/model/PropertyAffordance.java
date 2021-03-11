@@ -15,6 +15,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonObject;
+
+import kehio.annotations.done.RdfDatatype;
+import kehio.annotations.done.RdfDatatypeContainer;
+import kehio.annotations.done.RdfObjectCollection;
 import wot.jtd.JTD;
 import wot.jtd.exception.PropertyAffordanceValidationException;
 import wot.jtd.exception.SchemaValidationException;
@@ -29,25 +33,29 @@ import wot.jtd.vocabulary.Vocabulary;
 public class PropertyAffordance extends DataSchema {
 
 	// -- attributes
-
+	@RdfObjectCollection("https://www.w3.org/2019/wot/td#hasForm")
 	@NotEmpty(message="'forms' in any InteractionAffordance (PropertyAffordance, ActionAffordance, or EventAffordance) must not be empty")
 	protected Collection<Form> forms;
-	@JsonProperty(Vocabulary.JSONLD_TYPE)
-	private Collection<String> type;
+	@RdfDatatype("http://purl.org/dc/terms/title")
 	private String title;
+	@RdfDatatypeContainer(value="http://purl.org/dc/terms/title", byLang=true)
 	private Map<String,String> titles;
+	@RdfDatatype("http://purl.org/dc/terms/description")
 	private String description;
+	@RdfDatatypeContainer(value="http://purl.org/dc/terms/description", byLang=true)
 	private Map<String,String> descriptions;
+	
 	private Map<String,DataSchema> uriVariables;
+	@RdfDatatype("https://www.w3.org/2019/wot/td#isObservable")
 	private Boolean observable;
 	
 	// -- static constructors and validation method
 	
 	/**
 	 * This method creates a validated instance of {@link PropertyAffordance}.
-	 * @param forms am array with valid {@link Forms}
+	 * @param forms am array with valid {@link Form}
 	 * @return an instantiated and validated  {@link PropertyAffordance}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static PropertyAffordance create(Collection<Form> forms) throws SchemaValidationException {
 		// Create form
@@ -61,7 +69,7 @@ public class PropertyAffordance extends DataSchema {
 	/**
 	 * This method validates an instance of {@link PropertyAffordance}.
 	 * @param propertyAffordance an instance of {@link PropertyAffordance}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static void validate(PropertyAffordance propertyAffordance) throws SchemaValidationException {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -90,7 +98,7 @@ public class PropertyAffordance extends DataSchema {
 	/**
 	 * This method transforms the current {@link PropertyAffordance} object into a {@link JsonObject}.
 	 * @return a {@link JsonObject}
-	 * @throws JsonProcessingException
+	 * @throws JsonProcessingException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 	 */
 	@Override
 	public JsonObject toJson() throws JsonProcessingException {
@@ -101,9 +109,9 @@ public class PropertyAffordance extends DataSchema {
 	 * This method instantiates and validates a {@link PropertyAffordance} object from a {@link JsonObject}.
 	 * @param json a PropertyAffordance expressed as a {@link JsonObject}
 	 * @return a valid {@link PropertyAffordance}
-	 * @throws IOException
-	 * @throws SchemaValidationException 
-	 */
+	 * @throws IOException this exception is thrown when the syntax of the {@link JsonObject} is incorrect
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
+	*/
 	public static PropertyAffordance fromJson(JsonObject json) throws SchemaValidationException, IOException {
 		PropertyAffordance propertyAffordance = (PropertyAffordance) JTD.instantiateFromJson(json, PropertyAffordance.class);
 		validate(propertyAffordance);

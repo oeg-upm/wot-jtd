@@ -2,8 +2,8 @@ package wot.jtd.model;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,6 +26,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.JsonObject;
 
+import kehio.annotations.done.RdfDatatype;
+import kehio.annotations.done.RdfDatatypeCollection;
+import kehio.annotations.done.RdfDatatypeContainer;
+import kehio.annotations.done.RdfObject;
+import kehio.annotations.done.RdfObjectCollection;
+import kehio.annotations.done.RdfObjectContainer;
 import wot.jtd.JTD;
 import wot.jtd.exception.SchemaValidationException;
 import wot.jtd.exception.ThingValidationException;
@@ -44,22 +50,33 @@ public class Thing extends AbstractJTDObject{
 	@NotEmpty(message="The value of @context must not be empty, it can be either a URI or an array cointatinig URIs or JSONs")
 	@JsonProperty(Vocabulary.JSONLD_CONTEXT)
 	private Collection<String> context;
-	
+	@RdfDatatype("http://purl.org/dc/terms/title")
 	@NotNull(message="the title of a td:Thing must not be null")
 	private String title;
+	@RdfDatatypeContainer(value="http://purl.org/dc/terms/title", byLang=true)
 	private Map<String,String> titles;
+	@RdfDatatype("http://purl.org/dc/terms/decription")
 	private String description;
+	@RdfDatatypeContainer(value="http://purl.org/dc/terms/description", byLang=true)
 	private Map<String,String> descriptions;
+	@RdfObject("https://www.w3.org/2019/wot/td#versionInfo")
 	private VersionInfo version;
+	@RdfDatatype(value="http://purl.org/dc/terms/created", datatype="http://www.w3.org/2001/XMLSchema#dateTime") 
 	private String created;
+	@RdfDatatype(value="http://purl.org/dc/terms/modified", datatype="http://www.w3.org/2001/XMLSchema#dateTime")
 	private String modified;
+	@RdfObject("https://www.w3.org/2019/wot/td#supportContact")
 	private URI support;
+	@RdfObject("https://www.w3.org/2019/wot/td#base")
 	private URI base;
+	@RdfObjectCollection("https://www.w3.org/2019/wot/td#hasLink")
 	private Collection<Link> links;
 	
-	// TODO: lements in this array must be keys from the securityDefinitions
+	// TODO: elements in this array must be keys from the securityDefinitions
+	@RdfObjectCollection("https://www.w3.org/2019/wot/td#hasSecurityConfiguration")
 	@NotEmpty(message="security must not be blank, choose one from the security definitions")
 	private Collection<String> security;
+	@RdfObjectContainer(value="https://www.w3.org/2019/wot/td#securityDefinitions", key="https://www.w3.org/2019/wot/td#scheme")
 	@NotEmpty
 	private Map<String, SecurityScheme> securityDefinitions;
 	
@@ -67,10 +84,14 @@ public class Thing extends AbstractJTDObject{
 		// if PropertyAffordance readproperty and writeproperty
 		// if ActionAffordance invokeaction
 		// if EventAffordance subscribeevent
-	private Form[] forms;
+	@RdfObjectCollection("https://www.w3.org/2019/wot/td#hasForm")
+	private Collection<Form> forms;
 	
+	@RdfObjectContainer(value="https://www.w3.org/2019/wot/td#hasPropertyAffordance", key="https://www.w3.org/2019/wot/json-schema#propertyName")
 	private Map<String,PropertyAffordance> properties;
+	@RdfObjectContainer(value="https://www.w3.org/2019/wot/td#hasActionAffordance", key="https://www.w3.org/2019/wot/json-schema#propertyName")
 	private Map<String,ActionAffordance> actions;
+	@RdfObjectContainer(value="https://www.w3.org/2019/wot/td#hasEventAffordance", key="https://www.w3.org/2019/wot/json-schema#propertyName")
 	private Map<String,EventAffordance> events;
 	
 	// -- static constructors and validation method
@@ -80,9 +101,9 @@ public class Thing extends AbstractJTDObject{
 	 * This method creates a validated instance of {@link Thing}.
 	 * @param title a {@link String} title for the Thing
 	 * @param security a {@link Collection} of security schemes that are keys in the map of 'securityDefinitions' parameter
-	 * @param securityDeffinitions a {@link Map} between security names and {@link SecurityScheme}
+	 * @param securityDefinitions a {@link Map} between security names and {@link SecurityScheme}
 	 * @return an instantiated and validated  {@link Thing}
-	 * @throws SchemaValidationException 
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static Thing create(String title, Collection<String> security, Map<String, SecurityScheme> securityDefinitions) throws SchemaValidationException {
 		// Create Thing
@@ -98,7 +119,7 @@ public class Thing extends AbstractJTDObject{
 	/**
 	 * This method validates an instance a {@link Thing} object.
 	 * @param thing an instance of {@link Thing}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static void validate(Thing thing) throws SchemaValidationException {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -118,7 +139,7 @@ public class Thing extends AbstractJTDObject{
 	/**
 	 * This method transforms the current {@link Thing} object into a {@link JsonObject}.
 	 * @return a {@link JsonObject}
-	 * @throws JsonProcessingException
+	 * @throws JsonProcessingException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 	 */
 	public JsonObject toJson() throws JsonProcessingException {
 		return JTD.toJson(this);
@@ -128,9 +149,9 @@ public class Thing extends AbstractJTDObject{
 	 * This method instantiates and validates a {@link Thing} object from a {@link JsonObject}.
 	 * @param json a Thing expressed as a {@link JsonObject}
 	 * @return a valid {@link SecurityScheme}
-	 * @throws IOException
-	 * @throws ThingValidationException 
-	 */
+	 * @throws IOException this exception is thrown when the syntax of the {@link JsonObject} is incorrect
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
+	*/
 	public static Thing fromJson(JsonObject json) throws IOException, SchemaValidationException {
 		Thing thing = (Thing) JTD.instantiateFromJson(json.deepCopy(), Thing.class);
 		validate(thing);
@@ -223,10 +244,10 @@ public class Thing extends AbstractJTDObject{
 	public void setSecurityDefinitions(Map<String, SecurityScheme> securityDefinitions) {
 		this.securityDefinitions = securityDefinitions;
 	}
-	public Form[] getForms() {
+	public Collection<Form> getForms() {
 		return forms;
 	}
-	public void setForms(Form[] forms) {
+	public void setForms(Collection<Form> forms) {
 		this.forms = forms;
 	}
 
@@ -259,7 +280,24 @@ public class Thing extends AbstractJTDObject{
 		return this.hasExternalProperties;
 	}
 	
+
+	
+	/**
+	 * This method translates the TDs into RDF and then compares their isomorphism to check if they are equivalent
+	 * @param td a {@link JsonObject} TD
+	 * @return a boolean value indicating if the provided Thing Description is equivalent (isomorphic) with the {@link Thing}
+	 * @throws JsonLdError this exception is thrown if the {@link JsonObject} is not a correct Json-LD 1.1 semantics according to the WoT Thing Description
+	 * @throws JsonProcessingException  this exception is thrown if the {@link JsonObject} is not a correct syntaxt Json-LD 1.1
+	 */
+	public boolean isEquivalent(JsonObject td) throws JsonProcessingException, JsonLdError {
+		Model model = JTD.toRDF(this.toJson());
+		Model tdModel = JTD.toRDF(td);
+		return model.isIsomorphicWith(tdModel);
+	}
+	
 	// -- hascode and equals
+
+	
 
 	@Override
 	public int hashCode() {
@@ -272,8 +310,7 @@ public class Thing extends AbstractJTDObject{
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
 		result = prime * result + ((events == null) ? 0 : events.hashCode());
-		result = prime * result + Arrays.hashCode(forms);
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((forms == null) ? 0 : forms.hashCode());
 		result = prime * result + ((links == null) ? 0 : links.hashCode());
 		result = prime * result + ((modified == null) ? 0 : modified.hashCode());
 		result = prime * result + ((properties == null) ? 0 : properties.hashCode());
@@ -282,7 +319,6 @@ public class Thing extends AbstractJTDObject{
 		result = prime * result + ((support == null) ? 0 : support.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((titles == null) ? 0 : titles.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
 		return result;
 	}
@@ -331,12 +367,10 @@ public class Thing extends AbstractJTDObject{
 				return false;
 		} else if (!events.equals(other.events))
 			return false;
-		if (!Arrays.equals(forms, other.forms))
-			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (forms == null) {
+			if (other.forms != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!forms.equals(other.forms))
 			return false;
 		if (links == null) {
 			if (other.links != null)
@@ -378,32 +412,12 @@ public class Thing extends AbstractJTDObject{
 				return false;
 		} else if (!titles.equals(other.titles))
 			return false;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
-			return false;
 		if (version == null) {
 			if (other.version != null)
 				return false;
 		} else if (!version.equals(other.version))
 			return false;
 		return true;
-	}
-	
-
-	
-	/**
-	 * This method translates the TDs into RDF and then compares their isomorphism to check if they are equivalent
-	 * @param td a {@link JsonObject} TD
-	 * @return 
-	 * @throws JsonLdError 
-	 * @throws JsonProcessingException 
-	 */
-	public boolean isEquivalent(JsonObject td) throws JsonProcessingException, JsonLdError {
-		Model model = this.toRDF(this.toJson());
-		Model tdModel = this.toRDF(td);
-		return model.isIsomorphicWith(tdModel);
 	}
 
 

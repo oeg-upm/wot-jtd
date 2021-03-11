@@ -14,6 +14,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonObject;
+
+import kehio.annotations.done.RdfDatatype;
+import kehio.annotations.done.RdfDatatypeCollection;
+import kehio.annotations.done.RdfObject;
+import kehio.annotations.done.RdfObjectCollection;
 import wot.jtd.JTD;
 import wot.jtd.exception.FormValidationException;
 import wot.jtd.exception.SchemaValidationException;
@@ -28,20 +33,29 @@ import wot.jtd.vocabulary.Vocabulary;
 public class Form extends AbstractJTDObject{
 
 	// -- attributes
-	
-	@NotBlank(message = "'href' must be a valid non-empty and non-null URI or URI template")
-	private String href;
+	@RdfObjectCollection("https://www.w3.org/2019/wot/hypermedia#hasOperationType")
 	@JsonProperty(Vocabulary.OP)
 	@Pattern(regexp = "readproperty|writeproperty|observeproperty|unobserveproperty|invokeaction|subscribeevent|unsubscribeevent|readallproperties|writeallproperties|readmultipleproperties|writemultipleproperties", flags = Pattern.Flag.CASE_INSENSITIVE, message="'op' must have as value of the following: readproperty, writeproperty, observeproperty, unobserveproperty, invokeaction, subscribeevent, unsubscribeevent, readallproperties, writeallproperties, readmultipleproperties, or writemultipleproperties")
 	private Collection<String> op; // compactable array
+	
+	@RdfObject("https://www.w3.org/2019/wot/hypermedia#hasTarget")
+	@NotBlank(message = "'href' must be a valid non-empty and non-null URI or URI template")
+	private String href;
+	
+	@RdfDatatype("https://www.w3.org/2019/wot/hypermedia#forContentType")
 	private String contentType; //from RFC2046, default value
+	@RdfDatatype("https://www.w3.org/2019/wot/hypermedia#forContentCoding")
 	private String contentEncoding; 
+	@RdfDatatype("https://www.w3.org/2019/wot/hypermedia#forSubProtocol")
 	private String subprotocol;
+	@RdfDatatypeCollection("https://www.w3.org/2019/wot/td#hasSecurityConfiguration")
 	private Collection<String> security;
+	@RdfDatatypeCollection("https://www.w3.org/2019/wot/security#scopes")
 	private Collection<String> scopes;
+	@RdfObject("https://www.w3.org/2019/wot/hypermedia#returns")
 	private ExpectedResponse response;
-	@JsonProperty(Vocabulary.METHOD_NAME)
-	private String methodName;
+	
+
 
 	
 	// -- constructors and validation methods (static)
@@ -50,7 +64,7 @@ public class Form extends AbstractJTDObject{
 	 * This method creates a validated instance of {@link Form}, if default values are enabled in {@link JTD} the {@link Form} will have as content type 'application/json'
 	 * @param href a valid URI
 	 * @return an instantiated and validated  {@link Form}
-	 * @throws SchemaValidationException 
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect 
 	 */
 	public static Form create(String href) throws SchemaValidationException {
 		// Create form
@@ -66,7 +80,7 @@ public class Form extends AbstractJTDObject{
 	/**
 	 * This method validates an instance a {@link Form} object.
 	 * @param form an instance of {@link Form}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static void validate(Form form) throws SchemaValidationException {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -89,7 +103,7 @@ public class Form extends AbstractJTDObject{
 	/**
 	 * This method transforms the current {@link Form} object into a {@link JsonObject}.
 	 * @return a {@link JsonObject}
-	 * @throws JsonProcessingException
+	 * @throws JsonProcessingException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 	 */
 	public JsonObject toJson() throws JsonProcessingException {
 		return JTD.toJson(this);
@@ -100,9 +114,9 @@ public class Form extends AbstractJTDObject{
 	 * This method instantiates and validates a {@link Form} object from a {@link JsonObject}.
 	 * @param json a Link expressed as a {@link JsonObject}
 	 * @return a valid {@link Form}
-	 * @throws IOException
-	 * @throws SchemaValidationException
-	 */
+	 * @throws IOException this exception is thrown when the syntax of the {@link JsonObject} is incorrect
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
+	*/
 	public static Form fromJson(JsonObject json) throws IOException, SchemaValidationException {
 		Form form = (Form) JTD.instantiateFromJson(json, Form.class);
 		validate(form);
@@ -175,13 +189,6 @@ public class Form extends AbstractJTDObject{
 		this.response = response;
 	}
 
-	public String getMethodName() {
-		return methodName;
-	}
-
-	public void setMethodName(String methodName) {
-		this.methodName = methodName;
-	}
 
 	// hashcode and equals
 	
@@ -192,7 +199,6 @@ public class Form extends AbstractJTDObject{
 		result = prime * result + ((contentEncoding == null) ? 0 : contentEncoding.hashCode());
 		result = prime * result + ((contentType == null) ? 0 : contentType.hashCode());
 		result = prime * result + ((href == null) ? 0 : href.hashCode());
-		result = prime * result + ((methodName == null) ? 0 : methodName.hashCode());
 		result = prime * result + ((op == null) ? 0 : op.hashCode());
 		result = prime * result + ((response == null) ? 0 : response.hashCode());
 		result = prime * result + ((scopes == null) ? 0 : scopes.hashCode());
@@ -225,11 +231,7 @@ public class Form extends AbstractJTDObject{
 				return false;
 		} else if (!href.equals(other.href))
 			return false;
-		if (methodName == null) {
-			if (other.methodName != null)
-				return false;
-		} else if (!methodName.equals(other.methodName))
-			return false;
+		
 		if (op == null) {
 			if (other.op != null)
 				return false;

@@ -13,11 +13,16 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
+
+import kehio.annotations.RdfContainer;
+import kehio.annotations.done.RdfId;
+import kehio.annotations.done.RdfObject;
+import kehio.annotations.done.RdfObjectCollection;
+import kehio.mapper.Kehio;
 import wot.jtd.JTD;
-import wot.jtd.RDFHandler;
-import wot.jtd.annotations.RdfDatatypeProperty;
 import wot.jtd.vocabulary.Vocabulary;
 
 
@@ -30,9 +35,11 @@ public abstract class AbstractJTDObject {
 	
 	// Shared common attributes
 	@JsonProperty(Vocabulary.JSONLD_TYPE)
-	@RdfDatatypeProperty(value="https://www.w3.org/2019/wot/td#type")
+	@RdfObjectCollection("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
 	protected Collection<String> type;
-	protected URI id;
+	
+	@RdfId
+	protected String id;
 	
 
 	public Collection<String> getType() {
@@ -42,16 +49,17 @@ public abstract class AbstractJTDObject {
 		this.type = type;
 	}
 	
-	public URI getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(URI id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	
 	
 	
 	// Any other property outside the standard
+	@RdfContainer
 	protected Map<String,Object> unknownProperties = new HashMap<>();
 	
 	@JsonIgnore
@@ -83,10 +91,7 @@ public abstract class AbstractJTDObject {
 	    return unknownProperties;
 	}
 	
-	public  Model toRDF(JsonObject td) throws JsonLdError {
-		RDFHandler handler = new RDFHandler();	
-		return handler.toRDF(td);
-	}
+	
 	
 
 	

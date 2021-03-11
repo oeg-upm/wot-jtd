@@ -50,9 +50,9 @@ public class ActionAffordance extends AbstractJTDObject{
 
 		/**
 		 * This method creates a validated instance of {@link ActionAffordance}, if default values are enabled in {@link JTD} the {@link ActionAffordance} will have as the attributes 'safe' and 'idempotent' as false.
-		 * @param forms am array with valid {@link Forms}
+		 * @param forms am array with valid {@link wot.jtd.model.Form}
 		 * @return an instantiated and validated  {@link ActionAffordance}
-		 * @throws SchemaValidationException 
+		 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 		 */
 		public static ActionAffordance create(Collection<Form> forms) throws SchemaValidationException {
 			// create action affordance
@@ -70,7 +70,7 @@ public class ActionAffordance extends AbstractJTDObject{
 		/**
 		 * This method validates an instance of {@link ActionAffordance}.
 		 * @param actionAffordance an instance of {@link ActionAffordance}
-		 * @throws SchemaValidationException 
+		 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 		 */
 		public static void validate(ActionAffordance actionAffordance) throws SchemaValidationException {
 			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -98,7 +98,7 @@ public class ActionAffordance extends AbstractJTDObject{
 		/**
 		 * This method transforms the current {@link ActionAffordance} object into a {@link JsonObject}.
 		 * @return a {@link JsonObject}
-		 * @throws JsonProcessingException
+		 * @throws JsonProcessingException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 		 */
 		public JsonObject toJson() throws JsonProcessingException {
 			return JTD.toJson(this);
@@ -108,8 +108,8 @@ public class ActionAffordance extends AbstractJTDObject{
 		 * This method instantiates and validates a {@link ActionAffordance} object from a {@link JsonObject}.
 		 * @param json a ActionAffordance expressed as a {@link JsonObject}
 		 * @return a valid {@link ActionAffordance}
-		 * @throws IOException
-		 * @throws SchemaValidationException 
+		 * @throws IOException this exception is thrown when the syntax of the {@link JsonObject} is incorrect
+		 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 		 */
 		public static ActionAffordance fromJson(JsonObject json) throws IOException, SchemaValidationException {
 			ActionAffordance actionAffordance = (ActionAffordance) JTD.instantiateFromJson(json, ActionAffordance.class);
@@ -159,10 +159,12 @@ public class ActionAffordance extends AbstractJTDObject{
 			this.forms = forms;
 		}
 
+		@Override
 		public Collection<String> getType() {
 			return type;
 		}
 
+		@Override
 		public void setType(Collection<String> type) {
 			this.type = type;
 		}

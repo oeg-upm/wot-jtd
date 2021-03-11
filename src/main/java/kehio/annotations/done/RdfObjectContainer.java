@@ -1,4 +1,4 @@
-package wot.jtd.annotations;
+package kehio.annotations.done;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -7,8 +7,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.TYPE})
+@Target(ElementType.FIELD)
 @Inherited
-public @interface RdfType {
-	String[] types() default {};
+public @interface RdfObjectContainer {
+	String value() default "";
+	String key() default "";
+	boolean isPath() default false;
 }

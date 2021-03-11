@@ -52,9 +52,9 @@ public class EventAffordance extends AbstractJTDObject{
 	
 	/**
 	 * This method creates a validated instance of {@link EventAffordance}.
-	 * @param forms am array with valid {@link Forms}
+	 * @param forms am array with valid {@link Form}
 	 * @return an instantiated and validated  {@link EventAffordance}
-	 * @throws SchemaValidationException 
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static EventAffordance create(Collection<Form> forms) throws SchemaValidationException {
 		// create action affordance
@@ -68,7 +68,7 @@ public class EventAffordance extends AbstractJTDObject{
 	/**
 	 * This method validates an instance of {@link EventAffordance}.
 	 * @param eventAffordance an instance of {@link EventAffordance}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static void validate(EventAffordance eventAffordance) throws SchemaValidationException {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -105,7 +105,7 @@ public class EventAffordance extends AbstractJTDObject{
 	/**
 	 * This method transforms the current {@link EventAffordance} object into a {@link JsonObject}.
 	 * @return a {@link JsonObject}
-	 * @throws JsonProcessingException
+	 * @throws JsonProcessingException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 	 */
 	public JsonObject toJson() throws JsonProcessingException {
 		return JTD.toJson(this);
@@ -115,9 +115,9 @@ public class EventAffordance extends AbstractJTDObject{
 	 * This method instantiates and validates a {@link EventAffordance} object from a {@link JsonObject}.
 	 * @param json a EventAffordance expressed as a {@link JsonObject}
 	 * @return a valid {@link EventAffordance}
-	 * @throws IOException
-	 * @throws SchemaValidationException
-	 */
+	 * @throws IOException this exception is thrown when the syntax of the {@link JsonObject} is incorrect
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
+	*/
 	public static EventAffordance fromJson(JsonObject json) throws IOException, SchemaValidationException {
 		EventAffordance eventAffordance = (EventAffordance) JTD.instantiateFromJson(json, EventAffordance.class);
 		validate(eventAffordance);
@@ -135,6 +135,7 @@ public class EventAffordance extends AbstractJTDObject{
 		this.forms = forms;
 	}
 
+	@Override
 	public Collection<String> getType() {
 		return type;
 	}

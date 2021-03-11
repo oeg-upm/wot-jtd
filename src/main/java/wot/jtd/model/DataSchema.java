@@ -19,6 +19,11 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.JsonObject;
+
+import kehio.annotations.done.RdfDatatype;
+import kehio.annotations.done.RdfDatatypeContainer;
+import kehio.annotations.done.RdfObject;
+import kehio.annotations.done.RdfObjectCollection;
 import wot.jtd.JTD;
 import wot.jtd.exception.DataSchemaValidationException;
 import wot.jtd.exception.SchemaValidationException;
@@ -33,43 +38,58 @@ import wot.jtd.vocabulary.Vocabulary;
 public class DataSchema extends AbstractJTDObject{
 
 	// -- attributes
-	
-	@JsonProperty(Vocabulary.JSONLD_TYPE)
-	private Collection<String> type;
-	
+	@RdfDatatype("http://purl.org/dc/terms/title")
 	private String title;
+	@RdfDatatypeContainer(value="http://purl.org/dc/terms/title", byLang=true)
 	private Map<String,String> titles;
+	@RdfDatatype("http://purl.org/dc/terms/decription")
 	private String description;
+	@RdfDatatypeContainer(value="http://purl.org/dc/terms/decription", byLang=true)
 	private Map<String,String> descriptions;
+	//TODO: constant strings that translate to specific types
 	@Pattern(regexp = "array|object|number|integer|string|boolean|null", flags = Pattern.Flag.CASE_INSENSITIVE)
 	@JsonProperty(Vocabulary.TYPE)
 	private String schemaType;
+	@RdfObject("http://schema.org/unitCode")
 	private String unit;
+	@RdfObjectCollection("https://www.w3.org/2019/wot/json-schema#oneOf")
 	private Collection<DataSchema> oneOf;
 	
+	@RdfObjectCollection("https://www.w3.org/2019/wot/json-schema#enum")
 	@JsonRawValue
 	@JsonProperty(Vocabulary.ENUM)
 	private Collection<String> enumTypes;
 	
+	@RdfObject("https://www.w3.org/2019/wot/json-schema#const")
 	@JsonRawValue
 	@JsonProperty(Vocabulary.CONS)
 	private String cons; 
 	
+	@RdfDatatype("https://www.w3.org/2019/wot/json-schema#readOnly")
 	private Boolean readOnly; // has default value
+	@RdfDatatype("https://www.w3.org/2019/wot/json-schema#writeOnly")
 	private Boolean writeOnly; // has default value
+	@RdfDatatype("https://www.w3.org/2019/wot/json-schema#format")
 	private String format;
 	
 	// array
+	@RdfObjectCollection("https://www.w3.org/2019/wot/json-schema#items")
 	@JsonProperty(Vocabulary.ITEMS)
 	private Collection<DataSchema> items; //compactable attribute
+	@RdfDatatype("https://www.w3.org/2019/wot/json-schema#minItems")
 	private Integer minItems; // maxInclusive = 4294967295
+	@RdfDatatype("https://www.w3.org/2019/wot/json-schema#maxItems")
 	private Integer maxItems; // maxInclusive = 4294967295
 	// boolean + string
 	// number + integer
+	@RdfDatatype("https://www.w3.org/2019/wot/json-schema#minimum")
 	private Number minimum;
+	@RdfDatatype("https://www.w3.org/2019/wot/json-schema#maximum")
 	private Number maximum;
 	// object
+	// TODO: 
 	private Map<String,DataSchema> properties;
+	@RdfDatatype("https://www.w3.org/2019/wot/json-schema#required")
 	private Collection<String> required;
 
 	
@@ -78,7 +98,7 @@ public class DataSchema extends AbstractJTDObject{
 	/**
 	 * This method creates a validated instance of {@link DataSchema}, if default values are enabled in {@link JTD} the {@link DataSchema} will have the attributes 'readOnly' and 'writeOnly' as false
 	 * @return an instantiated and validated  {@link DataSchema}
-	 * @throws SchemaValidationException 
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static DataSchema create() throws SchemaValidationException {
 		DataSchema dataSchema = new DataSchema();
@@ -92,8 +112,8 @@ public class DataSchema extends AbstractJTDObject{
 	
 	/**
 	 * This method validates an instance of {@link DataSchema}.
-	 * @param actionAffordance an instance of {@link DataSchema}
-	 * @throws SchemaValidationException
+	 * @param dataSchema an instance of {@link DataSchema}
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static void validate(DataSchema dataSchema) throws SchemaValidationException {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -113,7 +133,7 @@ public class DataSchema extends AbstractJTDObject{
 	/**
 	 * This method transforms the current {@link DataSchema} object into a {@link JsonObject}.
 	 * @return a {@link JsonObject}
-	 * @throws JsonProcessingException
+	 * @throws JsonProcessingException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 	 */
 	public JsonObject toJson() throws JsonProcessingException {
 		return JTD.toJson(this);
@@ -123,8 +143,8 @@ public class DataSchema extends AbstractJTDObject{
 	 * This method instantiates and validates a {@link DataSchema} object from a {@link JsonObject}.
 	 * @param json a ExpectedResponse expressed as a {@link JsonObject}
 	 * @return a valid {@link DataSchema}
-	 * @throws IOException
-	 * @throws SchemaValidationException 
+	 * @throws IOException this exception is thrown when the syntax of the {@link JsonObject} is incorrect
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 	 */
 	public static DataSchema fromJson(JsonObject json) throws IOException, SchemaValidationException {
 		DataSchema dataSchema = (DataSchema) JTD.instantiateFromJson(json, DataSchema.class);
@@ -135,9 +155,11 @@ public class DataSchema extends AbstractJTDObject{
 	
 	// -- getters and setters
 
+	@Override
 	public Collection<String> getType() {
 		return type;
 	}
+	@Override
 	public void setType(Collection<String> type) {
 		this.type = type;
 	}

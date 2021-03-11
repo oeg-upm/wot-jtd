@@ -16,7 +16,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import kehio.mapper.Kehio;
 import wot.jtd.exception.SchemaValidationException;
+import wot.jtd.model.AbstractJTDObject;
 import wot.jtd.model.Thing;
 import wot.jtd.vocabulary.Vocabulary;
 
@@ -154,10 +156,11 @@ public class JTD {
 		RDFHandler handler = new RDFHandler();	
 		return handler.toRDF(td);
 	}
-	
+		
 	
 	public static List<Thing> fromRDF(Model model) throws JsonLdError, IOException, SchemaValidationException {
 		RDFHandler handler = new RDFHandler();	
-		return handler.fromRDF(model);
+		//return handler.fromRDF(model);
+		return null;
 	}
 }

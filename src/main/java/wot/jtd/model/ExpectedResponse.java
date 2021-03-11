@@ -8,13 +8,13 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonObject;
+
+import kehio.annotations.done.RdfDatatype;
 import wot.jtd.JTD;
 import wot.jtd.exception.ExpectedResponseValidationException;
 import wot.jtd.exception.SchemaValidationException;
-import wot.jtd.vocabulary.Vocabulary;
 
 /**
  * This class implements the object <a href="https://www.w3.org/TR/wot-thing-description/#expectedresponse">ExpectedResponse</a> from a Thing Description as specified in the Web of Things (WoT) documentation.<p>
@@ -26,20 +26,17 @@ import wot.jtd.vocabulary.Vocabulary;
 public class ExpectedResponse extends AbstractJTDObject{
 	
 	// -- attributes
-
+	@RdfDatatype("https://www.w3.org/2019/wot/hypermedia#forContentType")
 	@NotBlank(message="'contentType' is mandatory and must be a valid mime type from RDC 2046")
 	private String contentType; //from RFC2046
-	@JsonProperty(Vocabulary.STATUS_CODE_NUMBER)
-	private Integer statusCodeNumber;
-	private String description;
-	
+
 	// -- ExpectedResponse Object methods
 	
 	/**
 	 * This method creates a validated instance of {@link ExpectedResponse}.
 	 * @param contentType a valid mime type from the <a href="https://tools.ietf.org/html/rfc2046">RFC 2046</a> specification
-	 * @return
-	 * @throws SchemaValidationException
+	 * @return a valid {@link ExpectedResponse}
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static ExpectedResponse create(String contentType) throws SchemaValidationException {
 		// Create version info
@@ -53,7 +50,7 @@ public class ExpectedResponse extends AbstractJTDObject{
 	/**
 	 * This method validates an instance of {@link ExpectedResponse}.
 	 * @param expectedResponse an instance of {@link ExpectedResponse}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static void validate(ExpectedResponse expectedResponse) throws SchemaValidationException {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -70,9 +67,8 @@ public class ExpectedResponse extends AbstractJTDObject{
 
 	/**
 	 * This method transforms the current {@link ExpectedResponse} object into a {@link JsonObject}.
-	 * @param expectedResponse a {@link ExpectedResponse} object
 	 * @return a {@link JsonObject}
-	 * @throws JsonProcessingException
+	 * @throws JsonProcessingException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 	 */
 	public JsonObject toJson() throws JsonProcessingException {
 		return JTD.toJson(this);
@@ -82,9 +78,9 @@ public class ExpectedResponse extends AbstractJTDObject{
 	 * This method instantiates and validates a {@link ExpectedResponse} object from a {@link JsonObject}.
 	 * @param json a ExpectedResponse expressed as a {@link JsonObject}
 	 * @return a valid {@link ExpectedResponse}
-	 * @throws IOException
-	 * @throws ExpectedResponseValidationException 
-	 */
+	 * @throws IOException this exception is thrown when the syntax of the {@link JsonObject} is incorrect
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
+	*/
 	public static ExpectedResponse fromJson(JsonObject json) throws IOException, SchemaValidationException {
 		ExpectedResponse expectedResponse = (ExpectedResponse) JTD.instantiateFromJson(json, ExpectedResponse.class);
 		validate(expectedResponse);
@@ -100,21 +96,6 @@ public class ExpectedResponse extends AbstractJTDObject{
 		this.contentType = contentType;
 	}
 		
-	public Integer getStatusCodeNumber() {
-		return statusCodeNumber;
-	}
-
-	public void setStatusCodeNumber(Integer statusCodeNumber) {
-		this.statusCodeNumber = statusCodeNumber;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	// -- hashCode and equals
 	
@@ -123,8 +104,6 @@ public class ExpectedResponse extends AbstractJTDObject{
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((contentType == null) ? 0 : contentType.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((statusCodeNumber == null) ? 0 : statusCodeNumber.hashCode());
 		return result;
 	}
 
@@ -141,16 +120,6 @@ public class ExpectedResponse extends AbstractJTDObject{
 			if (other.contentType != null)
 				return false;
 		} else if (!contentType.equals(other.contentType))
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (statusCodeNumber == null) {
-			if (other.statusCodeNumber != null)
-				return false;
-		} else if (!statusCodeNumber.equals(other.statusCodeNumber))
 			return false;
 		return true;
 	}

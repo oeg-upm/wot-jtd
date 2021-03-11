@@ -2,7 +2,6 @@ package wot.jtd.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +12,12 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonObject;
+
+import kehio.annotations.done.RdfDatatype;
+import kehio.annotations.done.RdfDatatypeContainer;
+import kehio.annotations.done.RdfObjectCollection;
 import wot.jtd.JTD;
 import wot.jtd.exception.InteractionAffordanceValidationException;
 import wot.jtd.exception.SchemaValidationException;
@@ -30,27 +32,29 @@ import wot.jtd.exception.SchemaValidationException;
 public class InteractionAffordance extends AbstractJTDObject{
 
 	// -- attributes
-	
+	@RdfObjectCollection("https://www.w3.org/2019/wot/td#hasForm")
 	@NotEmpty(message="'forms' in any InteractionAffordance (InteractionAffordance, ActionAffordance, or EventAffordance) must not be empty")
-	protected Form[] forms;
-	
-	@JsonProperty("@type")
-	protected Collection<String> type;
+	protected Collection<Form> forms;
+	@RdfDatatype("http://purl.org/dc/terms/title")
 	protected String title;
+	@RdfDatatypeContainer(value="http://purl.org/dc/terms/title", byLang=true)
 	protected Map<String,String> titles;
+	@RdfDatatype("http://purl.org/dc/terms/description")
 	protected String description;
+	@RdfDatatypeContainer(value="http://purl.org/dc/terms/description", byLang=true)
 	protected Map<String,String> descriptions;
+	// TODO:
 	protected Map<String,DataSchema> uriVariables;
 	
 	// -- static constructors and validation method
 	
 		/**
 		 * This method creates a validated instance of {@link InteractionAffordance}.
-		 * @param forms am array with valid {@link Forms}
+		 * @param forms am array with valid {@link Form}
 		 * @return an instantiated and validated  {@link InteractionAffordance}
-		 * @throws SchemaValidationException
+		 * @throws SchemaValidationException  this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 		 */
-		public static InteractionAffordance create(Form[] forms) throws SchemaValidationException {
+		public static InteractionAffordance create(Collection<Form> forms) throws SchemaValidationException {
 			// Create form
 			InteractionAffordance interactionAffordance = new InteractionAffordance();
 			interactionAffordance.setForms(forms);
@@ -61,8 +65,8 @@ public class InteractionAffordance extends AbstractJTDObject{
 		
 		/**
 		 * This method validates an instance of {@link InteractionAffordance}.
-		 * @param InteractionAffordance an instance of {@link InteractionAffordance}
-		 * @throws SchemaValidationException
+		 * @param interactionAffordance an instance of {@link InteractionAffordance}
+		 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 		 */
 		public static void validate(InteractionAffordance interactionAffordance) throws SchemaValidationException {
 			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -74,8 +78,8 @@ public class InteractionAffordance extends AbstractJTDObject{
 				throw new InteractionAffordanceValidationException(builder.toString());
 			}
 			if(interactionAffordance.getForms()!=null) {
-				for(int index=0; index < interactionAffordance.getForms().length; index++) {
-					Form.validate(interactionAffordance.getForms()[index]);
+				for(Form form: interactionAffordance.getForms()) {
+					Form.validate(form);
 				}
 			}
 			if(interactionAffordance.getUriVariables()!=null) {
@@ -91,7 +95,7 @@ public class InteractionAffordance extends AbstractJTDObject{
 		/**
 		 * This method transforms the current {@link InteractionAffordance} object into a {@link JsonObject}.
 		 * @return a {@link JsonObject}
-		 * @throws JsonProcessingException
+		 * @throws JsonProcessingException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 		 */
 		public JsonObject toJson() throws JsonProcessingException {
 			return JTD.toJson(this);
@@ -101,8 +105,8 @@ public class InteractionAffordance extends AbstractJTDObject{
 		 * This method instantiates and validates a {@link InteractionAffordance} object from a {@link JsonObject}.
 		 * @param json a InteractionAffordance expressed as a {@link JsonObject}
 		 * @return a valid {@link InteractionAffordance}
-		 * @throws IOException
-		 * @throws SchemaValidationException
+		 * @throws IOException this exception is thrown when the syntax of the {@link JsonObject} is incorrect
+		 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 		 */
 		public static InteractionAffordance fromJson(JsonObject json) throws IOException, SchemaValidationException {
 			InteractionAffordance interactionAffordance = (InteractionAffordance) JTD.instantiateFromJson(json, InteractionAffordance.class);
@@ -113,18 +117,20 @@ public class InteractionAffordance extends AbstractJTDObject{
 	
 	// -- getters and setters
 	
-	public Form[] getForms() {
+	public Collection<Form> getForms() {
 		return forms;
 	}
 
-	public void setForms(Form[] forms) {
+	public void setForms(Collection<Form> forms) {
 		this.forms = forms;
 	}
 
+	@Override
 	public Collection<String> getType() {
 		return type;
 	}
 
+	@Override
 	public void setType(Collection<String> type) {
 		this.type = type;
 	}
@@ -177,10 +183,9 @@ public class InteractionAffordance extends AbstractJTDObject{
 		int result = super.hashCode();
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((descriptions == null) ? 0 : descriptions.hashCode());
-		result = prime * result + Arrays.hashCode(forms);
+		result = prime * result + ((forms == null) ? 0 : forms.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((titles == null) ? 0 : titles.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + ((uriVariables == null) ? 0 : uriVariables.hashCode());
 		return result;
 	}
@@ -204,7 +209,10 @@ public class InteractionAffordance extends AbstractJTDObject{
 				return false;
 		} else if (!descriptions.equals(other.descriptions))
 			return false;
-		if (!Arrays.equals(forms, other.forms))
+		if (forms == null) {
+			if (other.forms != null)
+				return false;
+		} else if (!forms.equals(other.forms))
 			return false;
 		if (title == null) {
 			if (other.title != null)
@@ -216,11 +224,6 @@ public class InteractionAffordance extends AbstractJTDObject{
 				return false;
 		} else if (!titles.equals(other.titles))
 			return false;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
-			return false;
 		if (uriVariables == null) {
 			if (other.uriVariables != null)
 				return false;
@@ -228,6 +231,10 @@ public class InteractionAffordance extends AbstractJTDObject{
 			return false;
 		return true;
 	}
+	
+
+
+	
 	
 
 

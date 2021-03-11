@@ -14,10 +14,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonObject;
 
+import kehio.annotations.done.RdfDatatype;
+import kehio.annotations.done.RdfDatatypeCollection;
+import kehio.annotations.done.RdfDatatypeContainer;
+import kehio.annotations.done.RdfObject;
 import wot.jtd.JTD;
 import wot.jtd.exception.SchemaValidationException;
 import wot.jtd.exception.SecuritySchemeValidationException;
@@ -38,33 +41,47 @@ public class SecurityScheme extends AbstractJTDObject{
 	private enum defaultSchemes {
 		nosec, basic, digest, psk, oauth2, bearer, apikey
 	}
-
-	@JsonProperty(Vocabulary.JSONLD_TYPE)
-	private Collection<String> type;
+	@RdfDatatype("https://www.w3.org/2019/wot/td#scheme")
 	@NotBlank(message = "'scheme' must not be blank, e.g., nosec, basic, digest, bearer, psk, oauth2, or apikey")
 	private String scheme;
+	@RdfDatatype("http://purl.org/dc/terms/description")
 	private String description;
+
+	@RdfDatatypeContainer(value="http://purl.org/dc/terms/description",byLang=true)
 	private Map<String, String> descriptions;
+	
+	@RdfObject("https://www.w3.org/2019/wot/td#proxy")
 	private URI proxy;
 	
 	// digest
+	@RdfDatatype("https://www.w3.org/2019/wot/td#qop")
 	@Pattern(regexp = "auth|auth-int", flags = Pattern.Flag.CASE_INSENSITIVE, message="'qop' must be one of: 'auth' or 'auth-int'.")
 	private String qop;
 	// psk
+	@RdfDatatype("https://www.w3.org/2019/wot/td#identity")
 	private String identity;
 	// oauth2
+	@RdfObject("https://www.w3.org/2019/wot/td#token")
 	private URI token;
+	@RdfObject("https://www.w3.org/2019/wot/td#refresh")
 	private URI refresh;
+	@RdfDatatype("https://www.w3.org/2019/wot/td#flow")
 	private String flow;
+	@RdfDatatypeCollection("https://www.w3.org/2019/wot/td#scopes")
 	private Collection<String> scopes;
 	// bearer
+	@RdfDatatype("https://www.w3.org/2019/wot/td#alg")
 	private String alg; 
+	@RdfDatatype("https://www.w3.org/2019/wot/td#format")
 	private String format; 
 	// oauth2 + bearer
+	@RdfObject("https://www.w3.org/2019/wot/td#authorization")
 	private URI authorization;
 	// basic + digest + apikey + bearer
+	@RdfDatatype("https://www.w3.org/2019/wot/td#in")
 	@Pattern(regexp = "header|query|body|cookie", flags = Pattern.Flag.CASE_INSENSITIVE, message="'in' must be one of: 'header', 'query', 'body', or 'cookie'")
 	private String in;
+	@RdfDatatype("https://www.w3.org/2019/wot/td#name")
 	private String name;
 	
 	// -- constructors and validation methods (static)
@@ -73,7 +90,7 @@ public class SecurityScheme extends AbstractJTDObject{
 	 * This method creates a validated instance of {@link SecurityScheme}, if default values are enabled in {@link JTD} some attributes from the {@link SecurityScheme} will be initialized <a href="https://www.w3.org/TR/wot-thing-description/#sec-default-values">depending on the schema</a>.
 	 * @param scheme a valid security scheme, e.g., nosec, basic, digest, psk, oauth2, bearer, or apikey 
 	 * @return an instantiated and validated  {@link SecurityScheme}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static SecurityScheme create(String scheme) throws SchemaValidationException {
 		// Create form
@@ -88,7 +105,7 @@ public class SecurityScheme extends AbstractJTDObject{
 	/**
 	 * This method creates a validated instance of {@link SecurityScheme} with 'nosec' as 'scheme'
 	 * @return an instantiated and validated  {@link SecurityScheme}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static SecurityScheme createNoSecurityScheme() throws SchemaValidationException {
 		return create(defaultSchemes.nosec.toString());
@@ -96,7 +113,7 @@ public class SecurityScheme extends AbstractJTDObject{
 	/**
 	 * This method creates a validated instance of {@link SecurityScheme} with 'basic' as 'scheme', if default values are enabled in {@link JTD} the attribute 'in' is initialized with 'header'
 	 * @return an instantiated and validated  {@link SecurityScheme}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static SecurityScheme createBasicSecurityScheme() throws SchemaValidationException {
 		SecurityScheme scheme = create(defaultSchemes.basic.toString());
@@ -107,7 +124,7 @@ public class SecurityScheme extends AbstractJTDObject{
 	/**
 	 * This method creates a validated instance of {@link SecurityScheme} with 'digest' as 'scheme', if default values are enabled in {@link JTD} the attribute 'in' is initialized with 'header' and 'qop' with 'auth'
 	 * @return an instantiated and validated  {@link SecurityScheme}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static SecurityScheme createDigestSecurityScheme() throws SchemaValidationException {
 		SecurityScheme scheme = create(defaultSchemes.digest.toString());
@@ -120,7 +137,7 @@ public class SecurityScheme extends AbstractJTDObject{
 	/**
 	 * This method creates a validated instance of {@link SecurityScheme} with 'bearer' as 'scheme', if default values are enabled in {@link JTD} the attribute 'in' is initialized with 'header', 'alg' with 'ES256', and 'format' with 'jwt'
 	 * @return an instantiated and validated  {@link SecurityScheme}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static SecurityScheme createBearerSecurityScheme() throws SchemaValidationException {
 		SecurityScheme scheme = create(defaultSchemes.bearer.toString());
@@ -134,7 +151,7 @@ public class SecurityScheme extends AbstractJTDObject{
 	/**
 	 * This method creates a validated instance of {@link SecurityScheme} with 'apikey' as 'scheme', if default values are enabled in {@link JTD} the attribute 'in' is initialized with 'query'
 	 * @return an instantiated and validated  {@link SecurityScheme}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static SecurityScheme createAPIKeySecurityScheme() throws SchemaValidationException {
 		SecurityScheme scheme = create(defaultSchemes.apikey.toString());
@@ -145,7 +162,7 @@ public class SecurityScheme extends AbstractJTDObject{
 	/**
 	 * This method creates a validated instance of {@link SecurityScheme} with 'psk' as 'scheme'.
 	 * @return an instantiated and validated  {@link SecurityScheme}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static SecurityScheme createPSKSecurityScheme() throws SchemaValidationException {
 		return create(defaultSchemes.psk.toString());
@@ -153,7 +170,7 @@ public class SecurityScheme extends AbstractJTDObject{
 	/**
 	 * This method creates a validated instance of {@link SecurityScheme} with 'oauth2' as 'scheme'.
 	 * @return an instantiated and validated  {@link SecurityScheme}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static SecurityScheme createOAuth2SecurityScheme() throws SchemaValidationException {
 		return create(defaultSchemes.oauth2.toString());
@@ -162,7 +179,7 @@ public class SecurityScheme extends AbstractJTDObject{
 	/**
 	 * This method validates an instance a {@link SecurityScheme} object.
 	 * @param securityScheme an instance of {@link SecurityScheme}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static void validate(SecurityScheme securityScheme) throws SchemaValidationException {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -181,7 +198,7 @@ public class SecurityScheme extends AbstractJTDObject{
 	/**
 	 * This method transforms the current {@link SecurityScheme} object into a {@link JsonObject}.
 	 * @return a {@link JsonObject}
-	 * @throws JsonProcessingException
+	 * @throws JsonProcessingException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 	 */
 	public JsonObject toJson() throws JsonProcessingException {
 		return JTD.toJson(this);
@@ -191,8 +208,8 @@ public class SecurityScheme extends AbstractJTDObject{
 	 * This method instantiates and validates a {@link SecurityScheme} object from a {@link JsonObject}.
 	 * @param json a SecurityScheme expressed as a {@link JsonObject}
 	 * @return a valid {@link SecurityScheme}
-	 * @throws IOException
-	 * @throws SchemaValidationException 
+	 * @throws IOException this exception is thrown when the syntax of the {@link JsonObject} is incorrect
+	 * @throws SchemaValidationException  this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 	 */
 	public static SecurityScheme fromJson(JsonObject json) throws IOException, SchemaValidationException {
 		SecurityScheme securityScheme = (SecurityScheme) JTD.instantiateFromJson(json, SecurityScheme.class);
@@ -203,10 +220,12 @@ public class SecurityScheme extends AbstractJTDObject{
 
 	// -- getters and setters
 
+	@Override
 	public Collection<String> getType() {
 		return type;
 	}
 
+	@Override
 	public void setType(Collection<String> type) {
 		this.type = type;
 	}

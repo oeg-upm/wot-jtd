@@ -14,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonObject;
 
+import kehio.annotations.done.RdfDatatype;
+import kehio.annotations.done.RdfObject;
 import wot.jtd.JTD;
 import wot.jtd.exception.LinkValidationException;
 import wot.jtd.exception.SchemaValidationException;
@@ -29,22 +31,25 @@ import wot.jtd.vocabulary.Vocabulary;
 public class Link extends AbstractJTDObject{
 
 	// -- attributes
-	
+	@RdfObject("https://www.w3.org/2019/wot/hypermedia#hasTarget")
 	@NotEmpty(message= "'href' must be a valid non-empty URI")
 	@NotNull(message = "'href' must be a valid non-null URI")
 	private URI href;
+	@RdfDatatype("https://www.w3.org/2019/wot/hypermedia#hintsAtMediaType")
 	@JsonProperty(Vocabulary.TYPE)
 	private String mediaType; //from RFC2046
+	@RdfDatatype("https://www.w3.org/2019/wot/hypermedia#hasRelationType")
 	private String rel;
+	@RdfObject("https://www.w3.org/2019/wot/hypermedia#hasAnchor")
 	private URI anchor;
 	
 	// -- static constructors and validation method
 	
 	/**
 	 * This method creates a validated instance of {@link Link}.
-	 * @param href a valid URI
+	 * @param href a valid {@link URI}
 	 * @return an instantiated and validated  {@link Link}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static Link create(URI href) throws SchemaValidationException {
 		// Create link
@@ -58,7 +63,7 @@ public class Link extends AbstractJTDObject{
 	/**
 	 * This method validates an instance of {@link Link}.
 	 * @param link an instance of {@link Link}
-	 * @throws SchemaValidationException
+	 * @throws SchemaValidationException  this exception is thrown when the syntax of the Thing Description as ORM is incorrect
 	 */
 	public static void validate(Link link) throws SchemaValidationException {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -76,7 +81,7 @@ public class Link extends AbstractJTDObject{
 	/**
 	 * This method transforms the current {@link Link} object into a {@link JsonObject}.
 	 * @return a {@link JsonObject}
-	 * @throws JsonProcessingException
+	 * @throws JsonProcessingException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 	 */
 	public JsonObject toJson() throws JsonProcessingException{
 		return JTD.toJson(this);
@@ -86,9 +91,9 @@ public class Link extends AbstractJTDObject{
 	 * This method instantiates and validates a {@link Link} object from a {@link JsonObject}.
 	 * @param json a Link expressed as a {@link JsonObject}
 	 * @return a valid {@link Link}
-	 * @throws IOException
-	 * @throws SchemaValidationException 
-	 */
+	 * @throws IOException this exception is thrown when the syntax of the {@link JsonObject} is incorrect
+	 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
+	*/
 	public static Link fromJson(JsonObject json) throws IOException, SchemaValidationException {
 		Link link = (Link) JTD.instantiateFromJson(json, Link.class);
 		validate(link);
@@ -116,7 +121,7 @@ public class Link extends AbstractJTDObject{
 	
 	/**
 	 * 
-	 * @param type a valid mime type from the <a href="https://tools.ietf.org/html/rfc2046">RFC 2046</a> specification
+	 * @param mediaType a valid mime type from the <a href="https://tools.ietf.org/html/rfc2046">RFC 2046</a> specification
 	 */
 	public void setMediaType(String mediaType) {
 		this.mediaType = mediaType;

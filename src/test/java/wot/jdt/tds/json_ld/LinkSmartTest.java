@@ -18,14 +18,13 @@ import wot.jtd.model.Thing;
 
 public class LinkSmartTest {
 
-
-	
-	@Test
-	public void test1() throws JsonProcessingException, JsonLdError {
+	static {
 		ARQ.setExecutionLogging(InfoLevel.NONE);
 		JTD.setShowExternalValuesWarnings(false);
-		JsonObject td = readJsonFile(new File("./src/test/resources/linksmart/td-1.json"));
+	}
 		
+	private boolean performGenericTest(String file) throws JsonProcessingException, JsonLdError {
+		JsonObject td = readJsonFile(new File(file));
 		Thing thing = null;
 		try {
 			thing =  Thing.fromJson(td);		
@@ -34,12 +33,9 @@ public class LinkSmartTest {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		Assert.assertTrue(thing!=null && thing.isEquivalent(td));
-
+		return thing!=null && thing.isEquivalent(td);
 	}
 	
-
 	private static JsonObject readJsonFile(File myObj) {
 		StringBuilder builder = new StringBuilder(); 
 		try {
@@ -54,6 +50,18 @@ public class LinkSmartTest {
 		      e.printStackTrace();
 		    }
 		return JTD.parseJson(builder.toString());
+	}
+	
+	@Test
+	public void test1() throws JsonProcessingException, JsonLdError {
+		Boolean testResult = performGenericTest("./src/test/resources/linksmart/td-1.json");
+		Assert.assertTrue(testResult);
+	}
+	
+	@Test
+	public void test2() throws JsonProcessingException, JsonLdError {
+		Boolean testResult = performGenericTest("./src/test/resources/linksmart/td-2.json");
+		Assert.assertTrue(testResult);
 	}
 	
 }

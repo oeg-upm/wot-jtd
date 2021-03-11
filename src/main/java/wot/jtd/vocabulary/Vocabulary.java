@@ -8,6 +8,7 @@ public class Vocabulary {
 
 	public static final String JSONLD_CONTEXT = "@context";
 	public static final String JSONLD_TYPE = "@type";
+	public static final String JSONLD_ID = "@id";
 	public static final String TYPE = "type";
 	
 	public static final String STATUS_CODE_NUMBER = "htv:statusCodeNumber";
@@ -17,7 +18,7 @@ public class Vocabulary {
 	public static final String SCOPES = "scopes";
 	public static final String OP = "op";
 	public static final String ITEMS = "items";
-	public static final String CONS = "cons";
+	public static final String CONS = "const";
 	public static final String SECURITY = "security";
 	
 	public static final String HEADER = "header";

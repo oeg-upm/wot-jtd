@@ -1,4 +1,4 @@
-package wot.jtd.annotations;
+package kehio.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -7,8 +7,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Inherited
-public @interface RdfAnyProperty {
+public @interface RdfPrefix {
+	String prefix() default "";
 	String value() default "";
 }
+
