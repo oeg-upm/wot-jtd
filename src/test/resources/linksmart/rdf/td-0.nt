@@ -1,0 +1,184 @@
+<URN:nhkrd:antwapp> <http://purl.org/dc/terms/created> "2020-12-18T12:44:28.620627722Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+<URN:nhkrd:antwapp> <http://purl.org/dc/terms/description> "HybridcastConnectEmulator:Antwapp" .
+<URN:nhkrd:antwapp> <http://purl.org/dc/terms/description> "HybridcastConnectEmulator:Antwapp"@en .
+<URN:nhkrd:antwapp> <http://purl.org/dc/terms/description> "ハイコネエミュレーター"@ja .
+<URN:nhkrd:antwapp> <http://purl.org/dc/terms/modified> "2020-12-18T12:44:28.620627722Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+<URN:nhkrd:antwapp> <http://purl.org/dc/terms/title> "HybridcastConnectReceiver" .
+<URN:nhkrd:antwapp> <http://purl.org/dc/terms/title> "HybridcastConnectReceiver"@en .
+<URN:nhkrd:antwapp> <http://purl.org/dc/terms/title> "ハイコネプロトコル対応受信機"@ja .
+<URN:nhkrd:antwapp> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/td#Thing> .
+<URN:nhkrd:antwapp> <https://www.w3.org/2019/wot/td#hasActionAffordance> _:b0 .
+<URN:nhkrd:antwapp> <https://www.w3.org/2019/wot/td#hasEventAffordance> _:b12 .
+<URN:nhkrd:antwapp> <https://www.w3.org/2019/wot/td#hasPropertyAffordance> _:b16 .
+<URN:nhkrd:antwapp> <https://www.w3.org/2019/wot/td#hasPropertyAffordance> _:b26 .
+<URN:nhkrd:antwapp> <https://www.w3.org/2019/wot/td#hasSecurityConfiguration> <_:nosec_sc> .
+<URN:nhkrd:antwapp> <https://www.w3.org/2019/wot/td#securityDefinitions> _:b39 .
+<URN:nhkrd:antwapp> <https://www.w3.org/2019/wot/td#ttl> "86400"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b0 <https://www.w3.org/2019/wot/td#hasForm> _:b1 .
+_:b0 <https://www.w3.org/2019/wot/td#hasInputSchema> _:b2 .
+_:b0 <https://www.w3.org/2019/wot/td#hasUriTemplateSchema> _:b11 .
+_:b0 <https://www.w3.org/2019/wot/td#isIdempotent> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:b0 <https://www.w3.org/2019/wot/td#isSafe> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:b1 <http://www.w3.org/2011/http#methodName> "POST" .
+_:b1 <https://www.w3.org/2019/wot/hypermedia#forContentType> "application/json" .
+_:b1 <https://www.w3.org/2019/wot/hypermedia#hasOperationType> <https://www.w3.org/2019/wot/td#invokeAction> .
+_:b1 <https://www.w3.org/2019/wot/hypermedia#hasTarget> <http://192.168.30.132:8887/antwapp/tvcontrol/hybridcast{?mode}> .
+_:b10 <http://purl.org/dc/terms/title> "The Transport_stream_id Schema" .
+_:b10 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#NumberSchema> .
+_:b10 <https://www.w3.org/2019/wot/json-schema#maximum> "65535"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b10 <https://www.w3.org/2019/wot/json-schema#minimum> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b10 <https://www.w3.org/2019/wot/json-schema#propertyName> "transport_stream_id" .
+_:b11 <http://purl.org/dc/terms/title> "launchmode: " .
+_:b11 <https://www.w3.org/2019/wot/td#enum> "app" .
+_:b11 <https://www.w3.org/2019/wot/td#enum> "tune" .
+_:b11 <https://www.w3.org/2019/wot/td#type> "string" .
+_:b12 <http://purl.org/dc/terms/title> "Message is emitted." .
+_:b12 <http://purl.org/dc/terms/title> "Message is emitted."@en .
+_:b12 <http://purl.org/dc/terms/title> "メッセージが送出された．"@ja .
+_:b12 <https://www.w3.org/2019/wot/td#hasForm> _:b13 .
+_:b12 <https://www.w3.org/2019/wot/td#hasNotificationSchema> _:b14 .
+_:b12 <https://www.w3.org/2019/wot/td#hasPropertyAffordance> _:b15 .
+_:b13 <https://www.w3.org/2019/wot/hypermedia#forContentType> "application/json" .
+_:b13 <https://www.w3.org/2019/wot/hypermedia#hasOperationType> <https://www.w3.org/2019/wot/td#subscribeEvent> .
+_:b13 <https://www.w3.org/2019/wot/hypermedia#hasTarget> <ws://192.168.30.132:8887/antwapp/websocket> .
+_:b14 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b15 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#NumberSchema> .
+_:b15 <https://www.w3.org/2019/wot/json-schema#propertyName> "value" .
+_:b16 <http://purl.org/dc/terms/description> "available media on a TV set" .
+_:b16 <http://purl.org/dc/terms/description> "available media on a TV set"@en .
+_:b16 <http://purl.org/dc/terms/description> "メディア利用可否"@ja .
+_:b16 <http://purl.org/dc/terms/title> "available media on a TV set" .
+_:b16 <http://purl.org/dc/terms/title> "available media on a TV set"@en .
+_:b16 <http://purl.org/dc/terms/title> "メディア利用可否"@ja .
+_:b16 <https://www.w3.org/2019/wot/json-schema#properties> _:b17 .
+_:b16 <https://www.w3.org/2019/wot/json-schema#properties> _:b22 .
+_:b16 <https://www.w3.org/2019/wot/json-schema#propertyName> "media" .
+_:b16 <https://www.w3.org/2019/wot/td#hasForm> _:b25 .
+_:b17 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b17 <https://www.w3.org/2019/wot/json-schema#properties> _:b18 .
+_:b17 <https://www.w3.org/2019/wot/json-schema#properties> _:b19 .
+_:b17 <https://www.w3.org/2019/wot/json-schema#properties> _:b20 .
+_:b17 <https://www.w3.org/2019/wot/json-schema#properties> _:b21 .
+_:b17 <https://www.w3.org/2019/wot/json-schema#propertyName> "body" .
+_:b18 <http://purl.org/dc/terms/title> "Availability of receiving Broadcasting Satelite" .
+_:b18 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#StringSchema> .
+_:b18 <https://www.w3.org/2019/wot/json-schema#enum> "Available" .
+_:b18 <https://www.w3.org/2019/wot/json-schema#enum> "NotAvailable" .
+_:b18 <https://www.w3.org/2019/wot/json-schema#propertyName> "BS" .
+_:b19 <http://purl.org/dc/terms/title> "Availability of receiving Comunication Satelite" .
+_:b19 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#StringSchema> .
+_:b19 <https://www.w3.org/2019/wot/json-schema#enum> "Available" .
+_:b19 <https://www.w3.org/2019/wot/json-schema#enum> "NotAvailable" .
+_:b19 <https://www.w3.org/2019/wot/json-schema#propertyName> "CS" .
+_:b2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b2 <https://www.w3.org/2019/wot/json-schema#properties> _:b3 .
+_:b2 <https://www.w3.org/2019/wot/json-schema#properties> _:b7 .
+_:b20 <http://purl.org/dc/terms/title> "Availability of receiving Telestrial Digital broadcasting" .
+_:b20 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#StringSchema> .
+_:b20 <https://www.w3.org/2019/wot/json-schema#enum> "Available" .
+_:b20 <https://www.w3.org/2019/wot/json-schema#enum> "NotAvailable" .
+_:b20 <https://www.w3.org/2019/wot/json-schema#propertyName> "TD" .
+_:b21 <http://purl.org/dc/terms/title> "The date of the file created" .
+_:b21 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#StringSchema> .
+_:b21 <https://www.w3.org/2019/wot/json-schema#propertyName> "created_at" .
+_:b22 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b22 <https://www.w3.org/2019/wot/json-schema#properties> _:b23 .
+_:b22 <https://www.w3.org/2019/wot/json-schema#properties> _:b24 .
+_:b22 <https://www.w3.org/2019/wot/json-schema#propertyName> "head" .
+_:b23 <https://www.w3.org/2019/wot/json-schema#propertyName> "code" .
+_:b24 <https://www.w3.org/2019/wot/json-schema#propertyName> "message" .
+_:b25 <http://www.w3.org/2011/http#methodName> "GET" .
+_:b25 <https://www.w3.org/2019/wot/hypermedia#forContentType> "application/json" .
+_:b25 <https://www.w3.org/2019/wot/hypermedia#hasOperationType> <https://www.w3.org/2019/wot/td#readProperty> .
+_:b25 <https://www.w3.org/2019/wot/hypermedia#hasTarget> <http://192.168.30.132:8887/antwapp/tvcontrol/channels?media=TD> .
+_:b25 <https://www.w3.org/2019/wot/security#scopes> "full_access" .
+_:b26 <http://purl.org/dc/terms/description> "HybridcastReceiverStatus" .
+_:b26 <http://purl.org/dc/terms/description> "HybridcastReceiverStatus"@en .
+_:b26 <http://purl.org/dc/terms/description> "受信機状態"@ja .
+_:b26 <http://purl.org/dc/terms/title> "HybridcastReceiverStatus" .
+_:b26 <http://purl.org/dc/terms/title> "HybridcastReceiverStatus"@en .
+_:b26 <http://purl.org/dc/terms/title> "受信機状態"@ja .
+_:b26 <https://www.w3.org/2019/wot/json-schema#properties> _:b27 .
+_:b26 <https://www.w3.org/2019/wot/json-schema#properties> _:b35 .
+_:b26 <https://www.w3.org/2019/wot/json-schema#propertyName> "receiverStatus" .
+_:b26 <https://www.w3.org/2019/wot/td#hasForm> _:b38 .
+_:b27 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b27 <https://www.w3.org/2019/wot/json-schema#properties> _:b28 .
+_:b27 <https://www.w3.org/2019/wot/json-schema#propertyName> "body" .
+_:b28 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b28 <https://www.w3.org/2019/wot/json-schema#properties> _:b29 .
+_:b28 <https://www.w3.org/2019/wot/json-schema#properties> _:b30 .
+_:b28 <https://www.w3.org/2019/wot/json-schema#properties> _:b31 .
+_:b28 <https://www.w3.org/2019/wot/json-schema#propertyName> "status" .
+_:b29 <http://purl.org/dc/terms/title> "The number of Companion_apps" .
+_:b29 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#NumberSchema> .
+_:b29 <https://www.w3.org/2019/wot/json-schema#propertyName> "companion_apps" .
+_:b3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b3 <https://www.w3.org/2019/wot/json-schema#properties> _:b4 .
+_:b3 <https://www.w3.org/2019/wot/json-schema#properties> _:b5 .
+_:b3 <https://www.w3.org/2019/wot/json-schema#properties> _:b6 .
+_:b3 <https://www.w3.org/2019/wot/json-schema#propertyName> "hybridcast" .
+_:b30 <http://purl.org/dc/terms/title> "The status of Hybridcast Browser" .
+_:b30 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#StringSchema> .
+_:b30 <https://www.w3.org/2019/wot/json-schema#enum> "NotStarted" .
+_:b30 <https://www.w3.org/2019/wot/json-schema#enum> "Running" .
+_:b30 <https://www.w3.org/2019/wot/json-schema#propertyName> "hybridcast" .
+_:b31 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b31 <https://www.w3.org/2019/wot/json-schema#properties> _:b32 .
+_:b31 <https://www.w3.org/2019/wot/json-schema#properties> _:b33 .
+_:b31 <https://www.w3.org/2019/wot/json-schema#properties> _:b34 .
+_:b31 <https://www.w3.org/2019/wot/json-schema#propertyName> "resource" .
+_:b32 <http://purl.org/dc/terms/title> "The Original_network_id of broadcasting" .
+_:b32 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#NumberSchema> .
+_:b32 <https://www.w3.org/2019/wot/json-schema#maximum> "65535"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b32 <https://www.w3.org/2019/wot/json-schema#minimum> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b32 <https://www.w3.org/2019/wot/json-schema#propertyName> "original_network_id" .
+_:b33 <http://purl.org/dc/terms/title> "Service_id of broadcasting" .
+_:b33 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#NumberSchema> .
+_:b33 <https://www.w3.org/2019/wot/json-schema#maximum> "65535"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b33 <https://www.w3.org/2019/wot/json-schema#minimum> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b33 <https://www.w3.org/2019/wot/json-schema#propertyName> "service_id" .
+_:b34 <http://purl.org/dc/terms/title> "The Transport_stream_id of broadcasting" .
+_:b34 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#NumberSchema> .
+_:b34 <https://www.w3.org/2019/wot/json-schema#maximum> "65535"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b34 <https://www.w3.org/2019/wot/json-schema#minimum> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b34 <https://www.w3.org/2019/wot/json-schema#propertyName> "transport_stream_id" .
+_:b35 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b35 <https://www.w3.org/2019/wot/json-schema#properties> _:b36 .
+_:b35 <https://www.w3.org/2019/wot/json-schema#properties> _:b37 .
+_:b35 <https://www.w3.org/2019/wot/json-schema#propertyName> "head" .
+_:b36 <https://www.w3.org/2019/wot/json-schema#propertyName> "code" .
+_:b37 <https://www.w3.org/2019/wot/json-schema#propertyName> "message" .
+_:b38 <http://www.w3.org/2011/http#methodName> "GET" .
+_:b38 <https://www.w3.org/2019/wot/hypermedia#forContentType> "application/json" .
+_:b38 <https://www.w3.org/2019/wot/hypermedia#hasOperationType> <https://www.w3.org/2019/wot/td#readProperty> .
+_:b38 <https://www.w3.org/2019/wot/hypermedia#hasTarget> <http://192.168.30.132:8887/antwapp/tvcontrol/status> .
+_:b39 <https://www.w3.org/2019/wot/td#scheme> "nosec" .
+_:b4 <http://purl.org/dc/terms/title> "The Aiturl Schema" .
+_:b4 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#StringSchema> .
+_:b4 <https://www.w3.org/2019/wot/json-schema#propertyName> "aiturl" .
+_:b5 <http://purl.org/dc/terms/title> "The Appid Schema" .
+_:b5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#NumberSchema> .
+_:b5 <https://www.w3.org/2019/wot/json-schema#maximum> "4294967295"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b5 <https://www.w3.org/2019/wot/json-schema#minimum> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b5 <https://www.w3.org/2019/wot/json-schema#propertyName> "appid" .
+_:b6 <http://purl.org/dc/terms/title> "The Orgid Schema" .
+_:b6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#NumberSchema> .
+_:b6 <https://www.w3.org/2019/wot/json-schema#maximum> "65535"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b6 <https://www.w3.org/2019/wot/json-schema#minimum> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b6 <https://www.w3.org/2019/wot/json-schema#propertyName> "orgid" .
+_:b7 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b7 <https://www.w3.org/2019/wot/json-schema#properties> _:b10 .
+_:b7 <https://www.w3.org/2019/wot/json-schema#properties> _:b8 .
+_:b7 <https://www.w3.org/2019/wot/json-schema#properties> _:b9 .
+_:b7 <https://www.w3.org/2019/wot/json-schema#propertyName> "resource" .
+_:b8 <http://purl.org/dc/terms/title> "The Original_network_id Schema" .
+_:b8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#NumberSchema> .
+_:b8 <https://www.w3.org/2019/wot/json-schema#maximum> "65535"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b8 <https://www.w3.org/2019/wot/json-schema#minimum> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b8 <https://www.w3.org/2019/wot/json-schema#propertyName> "original_network_id" .
+_:b9 <http://purl.org/dc/terms/title> "The Service_id Schema" .
+_:b9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#NumberSchema> .
+_:b9 <https://www.w3.org/2019/wot/json-schema#maximum> "65535"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b9 <https://www.w3.org/2019/wot/json-schema#minimum> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:b9 <https://www.w3.org/2019/wot/json-schema#propertyName> "service_id" .

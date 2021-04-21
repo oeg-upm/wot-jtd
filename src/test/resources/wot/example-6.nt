@@ -1,0 +1,14 @@
+_:b0 <http://purl.org/dc/terms/description> "Human readable information."@en .
+_:b0 <http://purl.org/dc/terms/title> "MyThing"@en .
+_:b0 <https://www.w3.org/2019/wot/td#hasPropertyAffordance> _:b1 .
+_:b0 <https://www.w3.org/2019/wot/td#hasPropertyAffordance> _:b2 .
+_:b0 <https://www.w3.org/2019/wot/td#hasSecurityConfiguration> <https://json-ld.org/playground/basic_sc> .
+_:b0 <https://www.w3.org/2019/wot/td#securityDefinitions> _:b3 .
+_:b1 <http://purl.org/dc/terms/title> "On/Off"@en .
+_:b1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#BooleanSchema> .
+_:b1 <https://www.w3.org/2019/wot/json-schema#propertyName> "on"@en .
+_:b2 <http://purl.org/dc/terms/title> "Status"@en .
+_:b2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b2 <https://www.w3.org/2019/wot/json-schema#propertyName> "status"@en .
+_:b3 <https://www.w3.org/2019/wot/td#in> "header"@en .
+_:b3 <https://www.w3.org/2019/wot/td#scheme> "basic"@en .

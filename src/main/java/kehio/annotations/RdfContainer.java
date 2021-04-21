@@ -10,5 +10,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Inherited
 public @interface RdfContainer {
-	
+	String[] ignore() default {};
+	RdfUrlMap[] prefixes() default {};
+	RdfUrlMap[] aliases(); // if property is present in alias, overrides the ignore properties 
+	String[] identifiers();
 }

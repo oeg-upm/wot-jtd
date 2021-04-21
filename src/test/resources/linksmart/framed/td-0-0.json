@@ -1,0 +1,45 @@
+{
+  "@context": [
+    "https://www.w3.org/2019/wot/td/v1",
+    {
+      "htv": "http://www.w3.org/2011/http#",
+      "iot": "http://iotschema.org/",
+      "om": "http://www.wurvoc.org/vocabularies/om-1.8/"
+    }
+  ],
+  "events": {
+    "hybridcastCompanionConnectListener": {
+      "data": {
+        "type": "object"
+      },
+      "forms": [
+        {
+          "contentType": "application/json",
+          "href": "ws://192.168.30.132:8887/antwapp/websocket",
+          "op": "subscribeevent"
+        }
+      ],
+      "properties": {
+        "value": {
+          "type": "number"
+        }
+      },
+      "title": "Message is emitted.",
+      "titles": {
+        "en": "Message is emitted.",
+        "ja": "メッセージが送出された．"
+      }
+    }
+  },
+  "id": "URN:nhkrd:antwapp",
+  "modified": "2020-12-18T12:44:28.620627722Z",
+  "security": [
+    "nosec_sc"
+  ],
+  "securityDefinitions": {
+    "nosec_sc": {
+      "scheme": "nosec"
+    }
+  },
+  "title": "HybridcastConnectReceiver"
+}

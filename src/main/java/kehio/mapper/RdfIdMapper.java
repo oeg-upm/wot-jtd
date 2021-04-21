@@ -4,10 +4,11 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.RDF;
 
-import kehio.annotations.done.RdfId;
+import kehio.annotations.RdfId;
 
 class RdfIdMapper implements RdfMapper{
 
@@ -19,7 +20,7 @@ class RdfIdMapper implements RdfMapper{
 
 	
 	@Override    
-	public String fromRdfToObject(Field field, Object object, Model model, Resource subject) throws IllegalAccessException, URISyntaxException {
+	public Property fromRdfToObject(Field field, Object object, Model model, Resource subject) throws IllegalAccessException, URISyntaxException {
 		field.setAccessible(true);
 		if(field.getType().equals(String.class)) {
 			instantiateStringField(field, subject, object, model);
@@ -28,7 +29,6 @@ class RdfIdMapper implements RdfMapper{
 		}else {
 			throw new IllegalArgumentException(KehioUtils.concatStrings("@RdfId can be only used with String or java.net.URI types. Please review annotation for attribute ", field.getName()));
 		}
-		
 		return null;
 	 }	
 	

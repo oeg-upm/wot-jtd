@@ -1,0 +1,26 @@
+{
+    "@context": ["https://www.w3.org/2019/wot/td/v1"], 
+    "@type" : "ThingTemplate",
+    "title": "Lamp Thing Description Template",
+    "description" : "Lamp Thing Description Template",
+    "securityDefinitions": {"nosec_sc": {"scheme": "nosec"}},
+    "security": ["nosec_sc"],
+    "properties": {
+        "status": {
+            "description" : "current status of the lamp (on|off)",
+            "type": "string",
+            "readOnly": true
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description" : "Turn the lamp on or off"
+        }
+    },
+    "events": {
+        "overheating": {
+            "description" : "Lamp reaches a critical temperature (overheating)",
+            "data": {"type": "string"}
+        }
+    }
+}

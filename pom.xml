@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.upm.fi.oeg</groupId>
   <artifactId>wot-jtd</artifactId>
-  <version>0.1.8</version>
+  <version>0.2.0</version>
   <url>https://oeg-upm.github.io/wot-jtd</url>
   <name>Java Thing Description API</name>
   <description>This API aims at assisting developers for handling WoT Thing Descriptions, providing special support for RDF.</description>
@@ -47,6 +47,13 @@
 	      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 	    </repository>
 	</distributionManagement>
+
+	<repositories>
+	    <repository>
+	        <id>jitpack.io</id>
+	        <url>https://jitpack.io</url>
+	    </repository>
+	</repositories>
 
 	<build>
 	  <plugins>
@@ -157,6 +164,8 @@
         <artifactId>hibernate-validator</artifactId>
         <version>6.0.13.Final</version>
     </dependency> 
+    
+    
     <dependency> 
         <groupId>org.glassfish</groupId>
         <artifactId>javax.el</artifactId>
@@ -193,18 +202,14 @@
 	    <artifactId>commons-lang3</artifactId>
 	    <version>3.11</version>
 	</dependency>
-	     
-     <!-- JSON-LD -->
-   <dependency>
-	    <groupId>com.apicatalog</groupId>
-	    <artifactId>titanium-json-ld</artifactId>
-	    <version>1.0.0</version>
+	
+	<!-- Json schema -->
+	<dependency>
+	    <groupId>com.github.everit-org.json-schema</groupId>
+	    <artifactId>org.everit.json.schema</artifactId>
+	    <version>1.12.2</version>
 	</dependency>
-	 <dependency>
-        <groupId>org.glassfish</groupId>
-        <artifactId>jakarta.json</artifactId>
-        <version>2.0.0</version>
-    </dependency>
+    
     <!-- jena -->
 	<!-- https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs -->
 	<dependency>
@@ -214,6 +219,8 @@
 	    <type>pom</type>
 	</dependency>	
 	
+
+	
 	<!-- https://mvnrepository.com/artifact/junit/junit -->
 	<dependency>
 	    <groupId>junit</groupId>
@@ -221,6 +228,7 @@
 	    <version>4.12</version>
 	    <scope>test</scope>
 	</dependency>
+	
 	
   </dependencies>
   

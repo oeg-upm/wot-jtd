@@ -1,0 +1,13 @@
+{
+    "@context": ["https://www.w3.org/2019/wot/td/v1"], 
+    "@type" : "ThingTemplate",
+    "title": "Buzzer Thing Description Template",
+    "securityDefinitions": {"nosec_sc": {"scheme": "nosec"}},
+    "security": ["nosec_sc"],
+    "description" : "Thing Description Template of a buzzer that makes noise for 10 seconds",
+     "actions": {
+        "buzz": {
+            "description" : "buzz for 10 seconds"
+        }
+     }
+}

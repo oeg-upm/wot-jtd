@@ -1,17 +1,23 @@
 package kehio.mapper;
 
+import java.io.ByteArrayInputStream;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.vocabulary.RDF;
@@ -24,28 +30,22 @@ public class Kehio {
 		
 		// Order of inclusion in the list matters
 		mappers.add(new RdfIdMapper());
-		mappers.add(new RdfDatatypeContainerSerialiser());
-		mappers.add(new RdfDatatypeCollectionSerialiser());
+		mappers.add(new RdfDatatypeGroupMapper());
 		mappers.add(new RdfDatatypeMapper());
 		
-		mappers.add(new RdfObjectContainerSerialiser());
-		mappers.add(new RdfObjectCollectionSerialiser());
-		mappers.add(new RdfObjectSerialiser());
-		
+		mappers.add(new RdfObjectGroupMapper());
+		mappers.add(new RdfObjectMapper());
 		
 	}
 	
-	
-	
-	
-	public static Object serializeClass(Class<?> clazz, Model model, Resource subject) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+
+	public static Object serializeClass(Class<?> clazz, Model model, Resource subject) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, URISyntaxException {
 		Object object = null;
-		Field[] fields = new Field[] {};
 		
 		object = createInstance(clazz);
 		Class<?> clazzFull = Class.forName(clazz.getName());
 		// Retrieve fields from super-classes
-		fields = extractFields(clazzFull);
+		Field[] fields = extractFields(clazzFull);
 		instantiateObject(object, fields, model, subject);
 		
 		return object;
@@ -67,39 +67,72 @@ public class Kehio {
 		return fields;
 	}
 	
-	private static void instantiateObject(Object object, Field[] fields, Model model, Resource subject) {
-		//model.write(System.out,"TTL");
+	private static void instantiateObject(Object object, Field[] fields, Model model, Resource subject) throws IllegalArgumentException, IllegalAccessException, URISyntaxException {
 		if(object!=null) {
-			Set<String> processedProperties = new HashSet<>();
+			Set<Property> processedProperties = new HashSet<>();
 			for (int index=0; index < fields.length; index++) {
 				Field field = fields[index];
-			
-				String processedProperty = processSerialiseFieldAnnotation(field, object, model, subject);
-				
-				if(processedProperty==null || processedProperty.isEmpty())
-					continue;
-				if(processedProperty!=null && !processedProperty.isEmpty())
-					processedProperties.add(processedProperty);
-				
+				Set<Property> correctlyProcessedProperty = processSerialiseFieldAnnotation(field, object, model, subject);
+				if(correctlyProcessedProperty!=null)
+					processedProperties.addAll(correctlyProcessedProperty);
+			}
+			// add unknown RDF properties
+			enhanceObjectWithUnknownProperties(fields, processedProperties, object, model, subject);
+			// add unknown RDF triples
+			enhanceObjectWithUnknownTriples(fields, processedProperties, object, model, subject);
+		}
+	}
+	
+	private static void enhanceObjectWithUnknownProperties(Field[] fields, Set<Property> processedProperties, Object object, Model model, Resource subject) throws IllegalArgumentException, IllegalAccessException, URISyntaxException {
+		RdfPropertiesContainerMapper mapperContainer = new RdfPropertiesContainerMapper();
+		mapperContainer.setPropertiesNotToContain(processedProperties);
+		int unknownAnnotations = 0;
+		for (int index=0; index < fields.length; index++) {
+			Field field = fields[index];
+			if(mapperContainer.hasProcesableAnnotation(field)) {
+				if(unknownAnnotations == 0)
+					mapperContainer.fromRdfToObject(field, object, model, subject);
+				unknownAnnotations++;
+			}else if(unknownAnnotations > 1) {
+				throw new IllegalArgumentException("A Java class can be annotated only with one Container notation");
 			}
 		}
 	}
 	
-	private static String processSerialiseFieldAnnotation(Field field, Object object, Model model, Resource subject) {
-		String annotationApplied = "";
+	private static void enhanceObjectWithUnknownTriples(Field[] fields, Set<Property> processedProperties, Object object, Model model, Resource subject) throws IllegalArgumentException, IllegalAccessException, URISyntaxException {
+		RdfContainerMapper mapperContainer = new RdfContainerMapper();
+		mapperContainer.setPropertiesNotToContain(processedProperties);
+		int unknownAnnotations = 0;
+		for (int index=0; index < fields.length; index++) {
+			Field field = fields[index];
+			if(mapperContainer.hasProcesableAnnotation(field)) {
+				if(unknownAnnotations == 0)
+					mapperContainer.fromRdfToObject(field, object, model, subject);
+				unknownAnnotations++;
+			}else if(unknownAnnotations > 1) {
+				throw new IllegalArgumentException("A Java class can be annotated only with one Container notation");
+			}
+		}
+	}
+	
+	private static Set<Property> processSerialiseFieldAnnotation(Field field, Object object, Model model, Resource subject) {
+		Set<Property> properties = null;
 		try {
 			for (int index=0; index < mappers.size(); index++) {
 			    RdfMapper serialiser = mappers.get(index);
 				if(serialiser.hasProcesableAnnotation(field)) {
-					annotationApplied = serialiser.fromRdfToObject(field, object, model, subject);
+					Property property = serialiser.fromRdfToObject(field, object, model, subject);
+					
+					properties = new HashSet<>();
+					if(property!=null)
+						properties.add(property);
 			    		break;
 			    }
 			}
 		}catch(Exception e) {
-			System.out.println(field);
-			System.out.println(e.toString());
+			throw new IllegalArgumentException(e.toString());
 		}
-		return annotationApplied;
+		return properties;
 	}
 	
 	private static Object createInstance(Class<?> clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -112,39 +145,57 @@ public class Kehio {
 	
 	
 	public static Model deserializeClass(Object object) throws IllegalArgumentException, IllegalAccessException, URISyntaxException, ClassNotFoundException {
-		Field[] fields = new Field[] {};
-		Model model = ModelFactory.createDefaultModel();
+		return deserializeClassExtended(object).getValue();
+   }
 	
+	public static Model deserializeClass(Object object,  Map<String,String> prefixes) throws IllegalArgumentException, IllegalAccessException, URISyntaxException, ClassNotFoundException {
+		return deserializeClassExtended(object, prefixes).getValue();
+    }
+	
+	protected static Entry<Resource, Model> deserializeClassExtended(Object object) throws IllegalArgumentException, IllegalAccessException, URISyntaxException, ClassNotFoundException {
+		return deserializeClassExtended(object, null);
+	}
+	
+	protected static Entry<Resource, Model> deserializeClassExtended(Object object, Map<String,String> prefixes) throws IllegalArgumentException, IllegalAccessException, URISyntaxException, ClassNotFoundException {
+		Model model = ModelFactory.createDefaultModel();
+		if(prefixes!=null && !prefixes.isEmpty())
+			model.setNsPrefixes(prefixes);
+		
 		Class<?> clazzFull = object.getClass();
 		// Retrieve fields from super-classes
-		fields = extractFields(clazzFull);
-		instantiateModel(object, fields, model);
+		Field[] fields = extractFields(clazzFull);
+		Resource subject = instantiateModel(object, fields, model);
 		
-		return model;
+		return  Map.entry(subject, model);
     }
 	
 	
 	
-	
-	private static void instantiateModel(Object object, Field[] fields, Model model) throws IllegalArgumentException, IllegalAccessException, URISyntaxException {
-		
+	private static Resource instantiateModel(Object object, Field[] fields, Model model) throws IllegalArgumentException, IllegalAccessException, URISyntaxException {
+		Resource subject = null;
 		if(object!=null) {
-			Resource subject = findSubjectResource(fields,object, model);
+			subject = findSubjectResource(fields,object, model);
 			model.remove(subject, RDF.type, Kehio.KEHIO_TYPE);
 
 			for (int index=0; index < fields.length; index++) {
 				Field field = fields[index];
-				processDeserialiseFieldAnnotation(field, object, model, subject);
+				field.setAccessible(true);
+				Object instantiatedField = field.get(object);
+				if(instantiatedField!=null)
+					processDeserialiseFieldAnnotation(field, object, model, subject);
 			}
 		}
+		return subject;
 	}
 	
 	private static void processDeserialiseFieldAnnotation(Field field, Object object, Model model, Resource subject) throws IllegalArgumentException, IllegalAccessException, URISyntaxException {
-			
-		for (int index=0; index < mappers.size(); index++) {
-			    RdfMapper mapper = mappers.get(index);
+		List<RdfMapper> mappersAux = new ArrayList<>(mappers);
+		mappersAux.add(new RdfPropertiesContainerMapper());
+		mappersAux.add(new RdfContainerMapper());
+		for (int index=0; index < mappersAux.size(); index++) {
+			    RdfMapper mapper = mappersAux.get(index);
 			     if(!(mapper instanceof RdfIdMapper) && mapper.hasProcesableAnnotation(field)) {
-					mapper.fromObjectToRdf(field, object, model, subject);
+			    	 	mapper.fromObjectToRdf(field, object, model, subject);
 			    		break;
 					
 			    }

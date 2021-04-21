@@ -1,0 +1,19 @@
+{   
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "title": "MyIlluminanceSensor",
+    "id": "urn:dev:ops:32473-WoTIlluminanceSensor-1234",
+    "securityDefinitions": {"nosec_sc": {"scheme": "nosec"}},
+    "security": ["nosec_sc"],
+    "events": {
+        "illuminance": {
+            "data":{"type": "integer"},
+            "forms": [
+                {
+                    "href": "mqtt://192.168.1.187:1883/illuminance",
+                    "contentType" : "text/plain",
+                    "op" : "subscribeevent"
+                }
+            ]
+        }
+    } 
+}

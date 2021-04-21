@@ -1,0 +1,43 @@
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        { "eg": "http://www.example.org/iot#" }
+    ],
+    "id": "urn:dev:ops:32473-WoTLamp-1234",
+    "title": "MyLampThing",
+    "securityDefinitions": {
+        "oauth2_sc": {
+            "scheme": "oauth2",
+            "flow": "code",
+            "authorization": "https://example.com/authorization",
+            "token": "https://example.com/token",
+            "scopes": ["limited", "special"]
+        }
+    },
+    "security": ["oauth2_sc"],
+    "type": "object",
+    "properties": {
+        "status": {
+            "title": "Status",
+            "type": "string",
+            "enum": ["On", "Off", "Error"]
+        },
+        "brightness": {
+            "title": "Brightness value",
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 100.0
+        },
+        "rgb": {
+            "title": "RGB color value",
+            "type": "array",
+            "items" : {
+                "type" : "number",
+                "minimum": 0,
+                "maximum": 255
+            },
+            "minItems": 3,
+            "maxItems": 3
+        }
+    }
+}

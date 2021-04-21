@@ -1,0 +1,55 @@
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "id": "urn:dev:ops:32473-WoTLamp-1234",
+    "title": "MyLampThing",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": [
+        "basic_sc"
+    ],
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly" : false,
+            "writeOnly" : false,
+            "forms": [{
+                "op": [
+                    "readproperty",
+                    "writeproperty"
+                ],
+                "href": "https://mylamp.example.com/status",
+                "contentType": "application/json"
+            }]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "safe": false,
+            "idempotent": false,
+            "forms": [{
+                "op": "invokeaction",
+                "href": "https://mylamp.example.com/toggle",
+                "contentType": "application/json"
+            }]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {
+                "type": "string",
+                "readOnly" : false,
+                "writeOnly" : false
+            },
+            "forms": [{
+                "op": "subscribeevent",
+                "href": "https://mylamp.example.com/oh",
+                "contentType": "application/json",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

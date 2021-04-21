@@ -1,0 +1,22 @@
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        { "@language" : "en" }
+    ],
+    "title": "MyThing",
+    "description": "Human readable information.",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in":"header"}
+    },
+    "security": ["basic_sc"],
+    "properties": {
+        "on": {
+            "title" : "On/Off",
+            "type": "boolean"
+        },
+        "status": {
+            "title" : "Status",
+            "type": "object"
+        }
+    }
+}

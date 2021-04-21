@@ -1,0 +1,41 @@
+<urn:dev:ops:32473-Thing-1234> <http://purl.org/dc/terms/description> "Webhook-based Event with subscription and unsubscribe form." .
+<urn:dev:ops:32473-Thing-1234> <http://purl.org/dc/terms/title> "WebhookThing" .
+<urn:dev:ops:32473-Thing-1234> <https://www.w3.org/2019/wot/td#hasEventAffordance> _:b0 .
+<urn:dev:ops:32473-Thing-1234> <https://www.w3.org/2019/wot/td#hasSecurityConfiguration> <https://json-ld.org/playground/nosec_sc> .
+<urn:dev:ops:32473-Thing-1234> <https://www.w3.org/2019/wot/td#securityDefinitions> _:b10 .
+_:b0 <http://purl.org/dc/terms/description> "Provides periodic temperature value updates." .
+_:b0 <https://www.w3.org/2019/wot/td#hasCancellationSchema> _:b1 .
+_:b0 <https://www.w3.org/2019/wot/td#hasForm> _:b3 .
+_:b0 <https://www.w3.org/2019/wot/td#hasForm> _:b4 .
+_:b0 <https://www.w3.org/2019/wot/td#hasNotificationSchema> _:b5 .
+_:b0 <https://www.w3.org/2019/wot/td#hasSubscriptionSchema> _:b6 .
+_:b0 <https://www.w3.org/2019/wot/td#hasUriTemplateSchema> _:b9 .
+_:b1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b1 <https://www.w3.org/2019/wot/json-schema#properties> _:b2 .
+_:b10 <https://www.w3.org/2019/wot/td#scheme> "nosec" .
+_:b2 <http://purl.org/dc/terms/description> "Required subscription ID to cancel subscription." .
+_:b2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#IntegerSchema> .
+_:b2 <https://www.w3.org/2019/wot/json-schema#propertyName> "subscriptionID" .
+_:b2 <https://www.w3.org/2019/wot/json-schema#writeOnly> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:b3 <http://www.w3.org/2011/http#methodName> "POST" .
+_:b3 <https://www.w3.org/2019/wot/hypermedia#forContentType> "application/json" .
+_:b3 <https://www.w3.org/2019/wot/hypermedia#hasOperationType> <https://www.w3.org/2019/wot/td#subscribeEvent> .
+_:b3 <https://www.w3.org/2019/wot/hypermedia#hasTarget> <http://192.168.0.124:8080/events/temp/subscribe> .
+_:b4 <http://www.w3.org/2011/http#methodName> "DELETE" .
+_:b4 <https://www.w3.org/2019/wot/hypermedia#hasOperationType> <https://www.w3.org/2019/wot/td#unsubscribeEvent> .
+_:b4 <https://www.w3.org/2019/wot/hypermedia#hasTarget> <http://192.168.0.124:8080/events/temp/{subscriptionID}> .
+_:b5 <http://purl.org/dc/terms/description> "Latest temperature value that is sent to the callback URL." .
+_:b5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#NumberSchema> .
+_:b6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#ObjectSchema> .
+_:b6 <https://www.w3.org/2019/wot/json-schema#properties> _:b7 .
+_:b6 <https://www.w3.org/2019/wot/json-schema#properties> _:b8 .
+_:b7 <http://purl.org/dc/terms/description> "Callback URL provided by subscriber for Webhook notifications." .
+_:b7 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#StringSchema> .
+_:b7 <https://www.w3.org/2019/wot/json-schema#format> "uri" .
+_:b7 <https://www.w3.org/2019/wot/json-schema#propertyName> "callbackURL" .
+_:b7 <https://www.w3.org/2019/wot/json-schema#writeOnly> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:b8 <http://purl.org/dc/terms/description> "Unique subscription ID for cancellation provided by WebhookThing." .
+_:b8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#StringSchema> .
+_:b8 <https://www.w3.org/2019/wot/json-schema#propertyName> "subscriptionID" .
+_:b8 <https://www.w3.org/2019/wot/json-schema#readOnly> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:b9 <https://www.w3.org/2019/wot/td#type> "string" .
