@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.upm.fi.oeg</groupId>
   <artifactId>wot-jtd</artifactId>
-  <version>0.2.0</version>
+  <version>0.2.1</version>
   <url>https://oeg-upm.github.io/wot-jtd</url>
   <name>Java Thing Description API</name>
-  <description>This API aims at assisting developers for handling WoT Thing Descriptions, providing special support for RDF.</description>
+  <description>This API aims at assisting developers for handling WoT Thing Descriptions, providing special support for RDF</description>
 	
 	<properties>
 	    <maven.compiler.target>1.8</maven.compiler.target>

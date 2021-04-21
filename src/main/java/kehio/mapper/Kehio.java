@@ -1,17 +1,14 @@
 package kehio.mapper;
 
-import java.io.ByteArrayInputStream;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -165,8 +162,8 @@ public class Kehio {
 		// Retrieve fields from super-classes
 		Field[] fields = extractFields(clazzFull);
 		Resource subject = instantiateModel(object, fields, model);
-		
-		return  Map.entry(subject, model);
+		Entry<Resource, Model> entry = Map.entry(subject, model);
+		return  entry;
     }
 	
 	

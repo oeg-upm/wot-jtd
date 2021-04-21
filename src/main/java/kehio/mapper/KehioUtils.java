@@ -169,7 +169,8 @@ class KehioUtils {
 		String typeName = pt.getTypeName();
 		typeName = typeName.substring(typeName.indexOf(KehioUtils.START_CLASS_TOKEN)+1, typeName.indexOf(KehioUtils.END_CLASS_TOKEN));
 		String[] mapTypes = typeName.split(", ");
-		return Map.entry(mapTypes[0], mapTypes[1]);
+		Entry<String,String> entry  = Map.entry(mapTypes[0], mapTypes[1]);
+		return entry;
 	}
 	
 	protected static  Class<?> extractMapValueType(Field field){
