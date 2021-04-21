@@ -1,0 +1,42 @@
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        {
+            "cov": "http://www.example.org/coap-binding#",
+            "ace": "http://www.example.org/ace-security#"
+        }
+    ],
+    "securityDefinitions": {
+        "ace_sc": {
+            "scheme": "ace:ACESecurityScheme",
+            "ace:as": "coaps://as.example.com/token",
+            "ace:audience": "coaps://rs.example.com",
+            "ace:scopes": ["limited", "special"],
+            "ace:cnonce": true
+        }
+    },
+    "title" : "Example 31",
+    "security": ["ace_sc"],
+    "properties": {
+        "status": {
+            "forms": [{
+                "op": "readproperty",
+                "href": "coaps://rs.example.com/status",
+                "contentType": "application/cbor",
+                "cov:methodName": "GET",
+                "ace:scopes": ["limited"]
+            }]
+        }
+    },
+    "actions": {
+        "configure": {
+            "forms": [{
+                "op": "invokeaction",
+                "href": "coaps://rs.example.com/configure",
+                "contentType": "application/cbor",
+                "cov:methodName": "POST",
+                "ace:scopes": ["special"]
+            }]
+        }
+    }
+}

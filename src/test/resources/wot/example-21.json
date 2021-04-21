@@ -1,0 +1,30 @@
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        { "eg": "http://www.example.org/iot#" }
+    ],
+    "id": "urn:dev:ops:32473-WoTLamp-1234",
+    "title": "MyLampThing",
+    "securityDefinitions": {
+        "oauth2_sc": {
+            "scheme": "oauth2",
+            "flow": "code",
+            "authorization": "https://example.com/authorization",
+            "token": "https://example.com/token",
+            "scopes": ["limited", "special"]
+        }
+    },
+    "security": ["oauth2_sc"],
+    "actions": {
+        "LeftDown": {
+            "uriVariables": {
+                "p" : { "type": "integer", "minimum": 0, "maximum": 16, "@type": "eg:SomeKindOfAngle" },
+                "d" : { "type": "integer", "minimum": 0, "maximum": 1, "@type": "eg:Direction" }
+            },
+            "forms": [{
+              "href" : "http://192.168.1.25/left{?p,d}",
+              "htv:methodName": "GET"
+            }]
+        }
+    }
+}

@@ -1,0 +1,14 @@
+_:b0 <http://purl.org/dc/terms/description> "Lamp Thing Description Template" .
+_:b0 <http://purl.org/dc/terms/title> "Lamp Thing Description Template" .
+_:b0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/td#ThingTemplate> .
+_:b0 <https://www.w3.org/2019/wot/td#hasActionAffordance> _:b1 .
+_:b0 <https://www.w3.org/2019/wot/td#hasEventAffordance> _:b2 .
+_:b0 <https://www.w3.org/2019/wot/td#hasPropertyAffordance> _:b4 .
+_:b1 <http://purl.org/dc/terms/description> "Turn the lamp on or off" .
+_:b2 <http://purl.org/dc/terms/description> "Lamp reaches a critical temperature (overheating)" .
+_:b2 <https://www.w3.org/2019/wot/td#hasNotificationSchema> _:b3 .
+_:b3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#StringSchema> .
+_:b4 <http://purl.org/dc/terms/description> "current status of the lamp (on|off)" .
+_:b4 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/json-schema#StringSchema> .
+_:b4 <https://www.w3.org/2019/wot/json-schema#propertyName> "status" .
+_:b4 <https://www.w3.org/2019/wot/json-schema#readOnly> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .

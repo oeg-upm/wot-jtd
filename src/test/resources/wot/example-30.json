@@ -1,0 +1,34 @@
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        { "cov": "http://www.example.org/coap-binding#" }
+    ],
+    "title": "MyLampThing",
+    "securityDefinitions": {
+        "oauth2_sc": {
+            "scheme": "oauth2",
+            "flow": "code",
+            "authorization": "https://example.com/authorization",
+            "token": "https://example.com/token",
+            "scopes": ["limited", "special"]
+        }
+    },
+    "security": ["oauth2_sc"],
+    "properties": {
+        "brightness": {
+            "description": "The current brightness setting",
+            "type": "integer",
+            "minimum": -64,
+            "maximum": 64,
+            "forms": [{
+                "op": "readproperty",
+                "href": "coap://example.org:61616/api/brightness",
+                "cov:methodName": "GET"
+            }, {
+                "op": "writeproperty",
+                "href": "coap://example.org:61616/api/brightness",
+                "cov:methodName": "POST"
+            }]
+        }
+    }
+}

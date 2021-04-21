@@ -1,0 +1,5 @@
+_:b0 <http://purl.org/dc/terms/description> "Thing Description Template of a buzzer that makes noise for 10 seconds" .
+_:b0 <http://purl.org/dc/terms/title> "Buzzer Thing Description Template" .
+_:b0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://www.w3.org/2019/wot/td#ThingTemplate> .
+_:b0 <https://www.w3.org/2019/wot/td#hasActionAffordance> _:b1 .
+_:b1 <http://purl.org/dc/terms/description> "buzz for 10 seconds" .

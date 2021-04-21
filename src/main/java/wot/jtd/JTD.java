@@ -1,40 +1,56 @@
 package wot.jtd;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Pattern;
 
 import org.apache.jena.rdf.model.Model;
-import com.apicatalog.jsonld.JsonLdError;
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.shacl.ShaclValidator;
+import org.apache.jena.shacl.Shapes;
+import org.apache.jena.shacl.ValidationReport;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import wot.jtd.exception.SchemaValidationException;
 import wot.jtd.model.Thing;
-import wot.jtd.vocabulary.Vocabulary;
 
 public class JTD {
 
 	private static Boolean defaultValues = false;
-	private static Boolean showExternalValuesWarnings = false;
-	private static final ObjectMapper MAPPER = new ObjectMapper();
-	private static List<String> relevantKeys = new CopyOnWriteArrayList<>();
+	private static Boolean removeNestedURNIds = false;
+	private static Boolean removeNestedUUIds = true;
+	private static Boolean includeDefaultLanguageInRDF = false;
+	private static List<String> arrayCompactKeys = new CopyOnWriteArrayList<>();
+	public static final boolean NORMALIZE_SECURITY_DEFINITIONS_SCHEMES = true;
+	public static final Pattern SECURITY_DEFINITION_SCHEMES_PATTERN = Pattern.compile("^[a-z0-9]+\\_sc$");
 	
 	static {
-		relevantKeys.add(Vocabulary.SCOPES); 
-		relevantKeys.add(Vocabulary.OP); 
-		relevantKeys.add(Vocabulary.JSONLD_TYPE); 
-		relevantKeys.add(Vocabulary.JSONLD_CONTEXT); 
-		relevantKeys.add(Vocabulary.ITEMS); 
-		relevantKeys.add(Vocabulary.SECURITY); 
+		arrayCompactKeys.add(Vocabulary.SCOPES); 
+		arrayCompactKeys.add(Vocabulary.OP); 
+		arrayCompactKeys.add(Vocabulary.JSONLD_TYPE); 
+		
+		arrayCompactKeys.add(Vocabulary.JSONLD_CONTEXT); 
+		arrayCompactKeys.add(Vocabulary.ITEMS); 
+		arrayCompactKeys.add(Vocabulary.SECURITY); 
 	}
+	
+	private JTD() {
+		super();
+	}
+	
+	// Getters & Setters
+	
+	public static List<String> getArrayCompactKeys() {
+		return arrayCompactKeys;
+	}
+	public static void setArrayCompactKey(String key) {
+		arrayCompactKeys.add(key); 
+	}
+	
 	// -- getters and setters
 	
 	public static Boolean getDefaultValues() {
@@ -44,120 +60,76 @@ public class JTD {
 	public static void setDefaultValues(Boolean defaultValues) {
 		JTD.defaultValues = defaultValues;
 	}
-		
-	
-
-	// -- methods
-	
-	public static Object instantiateFromJson(JsonObject json, Class<?> clazz) throws IOException {
-		JsonObject newJson = json.deepCopy();
-		expandArrays(newJson);
-		return MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).readValue(newJson.toString().getBytes(), clazz);
-	}
-	
-	public static JsonObject toJson(Object object) throws JsonProcessingException {
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonStr = mapper.writeValueAsString(object);
-		JsonObject jsonObject = parseJson(jsonStr);
-		compactArrays(jsonObject);
-		return jsonObject;
-	}
-	
-	public static void compactArrays(JsonObject json) {
-			Set<String> keys = new HashSet<>(json.keySet());
-			// Find keys in the JSON that have an Array as value and which size is exactly 1, iterate over its value
-			keys.stream().filter(key -> relevantKeys.contains(key) && json.get(key).isJsonArray() && json.getAsJsonArray(key).size()==1)
-								  .forEach(key -> compactArray(json, key)); // iterate and compact
 			
-			// Find keys in the JSON that have another JSON as value, and recursively call this function
-			keys.stream().filter(key -> json.get(key).isJsonObject()).forEach(key -> compactArrays(json.getAsJsonObject(key)));
-			
+	public static Boolean getRemoveNestedURNIds() {
+		return removeNestedURNIds;
+	}
+
+	public static void setRemoveNestedURNIds(Boolean removeNestedURNIds) {
+		JTD.removeNestedURNIds = removeNestedURNIds;
+	}
+
+	public static Boolean getRemoveNestedUUIds() {
+		return removeNestedUUIds;
+	}
+
+	public static void setRemoveNestedUUIds(Boolean removeNestedUUIds) {
+		JTD.removeNestedUUIds = removeNestedUUIds;
 	}
 	
-	private static void compactArray(JsonObject json, String key) {
-			if(json.has(key) && json.getAsJsonArray(key).size()==1) {
-				JsonElement element = json.getAsJsonArray(key).get(0);
-				if( element instanceof JsonObject) {
-					json.add(key, element);
-				}else {
-					json.addProperty(key, element.getAsString());
-				}
-			}	
+	public static boolean getIncludeDefaultLanguageInRDF() {
+		return includeDefaultLanguageInRDF;
 	}
 	
-
-	public static void expandArrays(JsonObject json) {
-		// Find keys in the JSON that have a 'primitive' value and that are expandable, then expand them
-		Set<String> keys = new HashSet<>(json.keySet());
-
-		keys.stream().filter(key -> relevantKeys.contains(key)).forEach(key -> expandArray(json,key));
-
-		// Find keys in the JSON that have another JSON as value, and recursively call this function
-		keys.stream().filter(key -> json.get(key).isJsonObject()).forEach(key -> expandArrays(json.getAsJsonObject(key)));
-		/*for(String key:keys) {
-			if(key.contains("actions"))
-				System.out.println("here");
-			if(json.get(key).isJsonObject()) {
-				expandArrays(json.getAsJsonObject(key));
-			}
-		}*/
-
-		// Find keys in the JSON that have an Array as value, iterate over its value
-		keys.stream().filter(key -> json.get(key).isJsonArray())
-							  .forEach(key -> callExpand(json.getAsJsonArray(key))); // iterate and filter elements that are objects
-		/*for(String key:keys) {
-			if(json.get(key).isJsonArray()) {
-				callExpand(json.getAsJsonArray(key));
-			}
-		}*/
+	public static void setIncludeDefaultLanguageInRDF(Boolean includeDefaultLanguageInRDF) {
+		JTD.includeDefaultLanguageInRDF = includeDefaultLanguageInRDF;
 	}
-	
-	private static void callExpand(JsonArray array) {
-		for(int index=0; index < array.size(); index++) {
-			JsonElement elem = array.get(index);
-			
-			if(elem.isJsonObject()) {
-				JsonObject json = elem.getAsJsonObject();
-				expandArrays(json);
-				array.set(index, json);
-			}else if(elem.isJsonArray()) {
-				callExpand( elem.getAsJsonArray());
-			}
-		}
-	}
-	
-	private static void expandArray(JsonObject json, String key) {
-		if(json.has(key) && !json.get(key).isJsonArray()) {
-			JsonElement element = json.get(key);
-			json.remove(key);
-			JsonArray array = new JsonArray();
-			array.add(element);
-			json.add(key, array);
-		}
-	}
+
+	// -- JSON methods
 	
 	public static JsonObject parseJson(String jsonStr) {
 		Gson gson = new Gson();
 		return gson.fromJson(jsonStr, JsonObject.class);
 	}
-
-	public static Boolean getShowExternalValuesWarnings() {
-		return showExternalValuesWarnings;
+	
+	public static Object instantiateFromJson(JsonObject json, Class<?> clazz) throws IOException {
+		return JsonHandler.instantiateFromJson(json, clazz);
 	}
-
-	public static void setShowExternalValuesWarnings(Boolean showExternalValues) {
-		JTD.showExternalValuesWarnings = showExternalValues;
+	
+	public static JsonObject toJson(Object object) throws JsonProcessingException {
+		return JsonHandler.toJson(object);
 	}
 	
 
-	public static  Model toRDF(JsonObject td) throws JsonLdError {
-		RDFHandler handler = new RDFHandler();	
-		return handler.toRDF(td);
+	// -- RDF methods
+	
+	public static Model toRDF(JsonObject td) throws IllegalAccessException, ClassNotFoundException, URISyntaxException, IOException, SchemaValidationException {
+		Thing thing = (Thing) JTD.instantiateFromJson(td, Thing.class);
+		return RdfHandler.toRDF(thing);
+	}
+	
+	public static Model toRDF(Thing thing) throws IllegalAccessException, ClassNotFoundException, URISyntaxException, IOException, SchemaValidationException {
+		return RdfHandler.toRDF(thing);
+	}
+	
+
+	public static Thing fromRDF(Model model, String thingId) {
+		return RdfHandler.fromRDF(model, ResourceFactory.createResource(thingId));
+	}
+	
+	public static List<Thing> fromRDF(Model model) throws SchemaValidationException {
+		return RdfHandler.fromRDF(model);
+	}
+	
+	// -- Validation methods
+	
+	public static ValidationReport validateWithShape(Thing thing, Model shape) throws IllegalAccessException, ClassNotFoundException, URISyntaxException, IOException, SchemaValidationException {
+		Shapes shapes = Shapes.parse(shape.getGraph());
+		Model thingModel = JTD.toRDF(thing);
+		return ShaclValidator.get().validate(shapes, thingModel.getGraph());
 	}
 	
 	
-	public static List<Thing> fromRDF(Model model) throws JsonLdError, IOException, SchemaValidationException {
-		RDFHandler handler = new RDFHandler();	
-		return handler.fromRDF(model);
-	}
+	
+	
 }
