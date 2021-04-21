@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.upm.fi.oeg</groupId>
   <artifactId>wot-jtd</artifactId>
-  <version>0.2.0</version>
+  <version>0.2.1</version>
   <url>https://oeg-upm.github.io/wot-jtd</url>
   <name>Java Thing Description API</name>
-  <description>This API aims at assisting developers for handling WoT Thing Descriptions, providing special support for RDF.</description>
+  <description>This API aims at assisting developers for handling WoT Thing Descriptions, providing special support for RDF</description>
 	
 	<properties>
 	    <maven.compiler.target>1.8</maven.compiler.target>
@@ -47,13 +47,6 @@
 	      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 	    </repository>
 	</distributionManagement>
-
-	<repositories>
-	    <repository>
-	        <id>jitpack.io</id>
-	        <url>https://jitpack.io</url>
-	    </repository>
-	</repositories>
 
 	<build>
 	  <plugins>
@@ -185,12 +178,7 @@
 	    <version>2.8.6</version>
 	</dependency>
      
-     <dependency>
-	  <groupId>org.apache.commons</groupId>
-	  <artifactId>commons-lang3</artifactId>
-	  <version>3.11</version>
-	</dependency>
-	
+
 	<dependency>
 	   <groupId>commons-logging</groupId>
 	   <artifactId>commons-logging</artifactId>
@@ -204,12 +192,7 @@
 	</dependency>
 	
 	<!-- Json schema -->
-	<dependency>
-	    <groupId>com.github.everit-org.json-schema</groupId>
-	    <artifactId>org.everit.json.schema</artifactId>
-	    <version>1.12.2</version>
-	</dependency>
-    
+	
     <!-- jena -->
 	<!-- https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs -->
 	<dependency>

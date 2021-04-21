@@ -24,7 +24,6 @@ import kehio.annotations.RdfObjectGroup;
 import kehio.annotations.RdfUrlMap;
 import wot.jtd.JTD;
 import wot.jtd.Vocabulary;
-import wot.jtd.exception.SchemaValidationException;
 import wot.jtd.model.interactions.ActionAffordance;
 import wot.jtd.model.interactions.EventAffordance;
 import wot.jtd.model.interactions.PropertyAffordance;
@@ -346,7 +345,6 @@ public class Thing extends AbstractRdfObject{
 		 * @param json a Thing expressed as a {@link JsonObject}
 		 * @return a valid {@link SecurityScheme}
 		 * @throws IOException this exception is thrown when the syntax of the {@link JsonObject} is incorrect
-		 * @throws SchemaValidationException this exception is thrown when the syntax of the Thing Description as {@link JsonObject} is incorrect
 		*/
 		public static Thing fromJson(JsonObject json) throws IOException {
 			return (Thing) JTD.instantiateFromJson(json.deepCopy(), Thing.class);
