@@ -9,10 +9,10 @@ The JDT is an ORM implementation of the current [Thing Description](https://www.
  * Round trip-translation:
 	 * Translate from a JSON-LD framed document into a set of equivalent RDF triples
 	 * Translate a set of RDF triples into its equivalent JSON-LD framed document
- * Validation **(coming soon)**
+ * Validation 
 	 * Validate a JTD using [SHACL shapes](https://www.w3.org/TR/shacl/)
-	 * Validate a JTD using [JSON schema](https://json-schema.org/)
-	 * Validate a JTD according to the [restrictions specified in the standard](https://www.w3.org/TR/wot-thing-description/)
+	 * Validate a JTD using [JSON schema](https://json-schema.org/) **(coming soon)**
+	 * Validate a JTD according to the [restrictions specified in the standard](https://www.w3.org/TR/wot-thing-description/) **(coming soon)**
 
 If you have any feedback or feature suggestion, please let us know posting an issue with the label <span style="color:#EFA914">**feedback**</span>
 
