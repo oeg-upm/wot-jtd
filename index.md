@@ -18,4 +18,4 @@ The JTD is distributed as a Maven dependency easy to install and use.
 
 #### Support or Contact
 
-JTD was created by [Andrea Cimmino](https://scholar.google.es/citations?user=_6U9WMcAAAAJ&hl=es&oi=ao) (cimmino@fi.upm.es) and [Raúl García Castro](http://garcia-castro.com/) (rgarcia@fi.upm.es) at the [Universidad Politécnica de Madrid](https://www.upm.es/) in the research group [Ontology Engineering Group](https://oeg.fi.upm.es/).
+WoT-JTD was created by [Andrea Cimmino](https://scholar.google.es/citations?user=_6U9WMcAAAAJ&hl=es&oi=ao) (cimmino@fi.upm.es) and [Raúl García Castro](http://garcia-castro.com/) (rgarcia@fi.upm.es) at the [Universidad Politécnica de Madrid](https://www.upm.es/) in the research group [Ontology Engineering Group](https://oeg.fi.upm.es/).
