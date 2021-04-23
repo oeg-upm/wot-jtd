@@ -1,37 +1,18 @@
-## Welcome to GitHub Pages
+## Java API for Thing Descriptions of the Web of Things
 
-You can use the [editor on GitHub](https://github.com/oeg-upm/wot-jtd/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+The JDT is an ORM implementation of the current Thing Description model standardised by the W3C Web of Things group. The current features are:
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+* Serialise:
+  * Serialise any Thing Description as a Java Object, i.e., a JDT
+  * Serialise a JDT from a JSON-LD framed document
+  * Serialise a JDT from a set of RDF triples
+* Round trip-translation:
+  *  Translate from a JSON-LD framed document into a set of equivalent RDF triples
+  *  Translate a set of RDF triples into its equivalent JSON-LD framed document
+* Validation
+  * Validate a JTD using SHACL shapes
+  * Validate a JTD using JSON schema (coming soon)
+  * Validate a JTD according to the restrictions specified in the standard (coming soon)
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/oeg-upm/wot-jtd/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
