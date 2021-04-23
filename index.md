@@ -1,6 +1,6 @@
 ## Java API for Thing Descriptions of the Web of Things
 
-The JDT is an ORM implementation of the current Thing Description model standardised by the W3C Web of Things group. The current features are:
+The JDT is an open (Apache 2.0) ORM implementation of the current Thing Description model standardised by the W3C Web of Things group. The current features are:
 
 * Serialise:
   * Serialise any Thing Description as a Java Object, i.e., a JDT
@@ -13,6 +13,9 @@ The JDT is an ORM implementation of the current Thing Description model standard
   * Validate a JTD using SHACL shapes
   * Validate a JTD using JSON schema (coming soon)
   * Validate a JTD according to the restrictions specified in the standard (coming soon)
+
+
+The JTD is a Maven dependency easy to install and to use, check out [the documentation](https://github.com/oeg-upm/wot-jtd)
 
 
 
