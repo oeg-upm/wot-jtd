@@ -1,5 +1,5 @@
 # Java API for Thing Descriptions of WoT (JDTs)
-[![Version](https://img.shields.io/badge/Version-0.2.1-orange)](https://github.com/oeg-upm/wot-jtd/releases)] [![Maven Central](https://img.shields.io/badge/Maven%20Central-v0.2.1-green)](https://search.maven.org/search?q=g:%22es.upm.fi.oeg%22%20AND%20a:%22wot-jtd%22) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![GitHub stars](https://img.shields.io/github/stars/Naereen/StrapDown.js.svg?style=social&label=Star&maxAge=2592000)](https://github.com/oeg-upm/wot-jtd/stargazers)
+[![Version](https://img.shields.io/badge/Version-0.2.2-orange)](https://github.com/oeg-upm/wot-jtd/releases)] [![Maven Central](https://img.shields.io/badge/Maven%20Central-v0.2.2-green)](https://search.maven.org/search?q=g:%22es.upm.fi.oeg%22%20AND%20a:%22wot-jtd%22) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![GitHub stars](https://img.shields.io/github/stars/Naereen/StrapDown.js.svg?style=social&label=Star&maxAge=2592000)](https://github.com/oeg-upm/wot-jtd/stargazers)
 
 The JDT is an ORM implementation of the current [Thing Description](https://www.w3.org/TR/wot-thing-description/) model standardised by the [W3C Web of Things group](https://www.w3.org/WoT/). The current features are:
  * Serialise:
@@ -41,16 +41,16 @@ Import the JDTs library as a maven dependency, **be sure to specify the latest v
 <dependency>
   <groupId>es.upm.fi.oeg</groupId>
   <artifactId>wot-jtd</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
 </dependency>
 ``` 
 
 Alternatively, the dependency can be installed manually. First, download the latest jar from the [releases section](), and then install the dependency as follows (**be sure to specify the latest version**):
 ````
-mvn install:install-file -Dfile=wot-jtd.jar -DgroupId=es.upm.fi.oeg -DartifactId=wot-jtd -Dversion=0.2.1 -Dpackaging=jar
+mvn install:install-file -Dfile=wot-jtd.jar -DgroupId=es.upm.fi.oeg -DartifactId=wot-jtd -Dversion=0.2.2 -Dpackaging=jar
 ````
 
-Check our [Maven Central Repository page](https://search.maven.org/artifact/es.upm.fi.oeg/wot-jtd/0.2.1/jar) to discover other installation options like Gradle Groovy or Kotlin, Scala, and others. 
+Check our [Maven Central Repository page](https://search.maven.org/artifact/es.upm.fi.oeg/wot-jtd/0.2.2/jar) to discover other installation options like Gradle Groovy or Kotlin, Scala, and others. 
 
 ## Model
 

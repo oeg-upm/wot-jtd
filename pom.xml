@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.upm.fi.oeg</groupId>
   <artifactId>wot-jtd</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <url>https://oeg-upm.github.io/wot-jtd</url>
   <name>Java Thing Description API</name>
   <description>This API aims at assisting developers for handling WoT Thing Descriptions, providing special support for RDF</description>
@@ -14,7 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	
-	  <licenses>
+	<licenses>
 	  <license>
 	    <name>The Apache License, Version 2.0</name>
 	    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
@@ -212,6 +212,11 @@
 	    <scope>test</scope>
 	</dependency>
 	
+	<dependency>
+	  <groupId>es.upm.fi.oeg</groupId>
+	  <artifactId>kehio</artifactId>
+	  <version>0.1.0</version>
+	</dependency>
 	
   </dependencies>
   

@@ -25,7 +25,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import kehio.mapper.Kehio;
+import kehio.Kehio;
 import wot.jtd.exception.SchemaValidationException;
 import wot.jtd.model.Thing;
 
