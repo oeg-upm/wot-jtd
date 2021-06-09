@@ -9,10 +9,11 @@ The JDT is an ORM implementation of the current [Thing Description](https://www.
  * Round trip-translation:
 	 * Translate from a JSON-LD framed document into a set of equivalent RDF triples
 	 * Translate a set of RDF triples into its equivalent JSON-LD framed document
- * Validation **(coming soon)**
+ * Validation 
 	 * Validate a JTD using [SHACL shapes](https://www.w3.org/TR/shacl/)
 	 * Validate a JTD using [JSON schema](https://json-schema.org/)  **(coming soon)**
 	 * Validate a JTD according to the [restrictions specified in the standard](https://www.w3.org/TR/wot-thing-description/)  **(coming soon)**
+
 
 If you have any feedback or feature suggestion, please let us know posting an issue with the label <span style="color:#EFA914">**feedback**</span>
 
@@ -161,3 +162,4 @@ ValidationReport shapeReport = JTD.validateWithShape(thing, shapesGraph);
 
 ### Support or Contact
 WoT-JTD was created by [Andrea Cimmino](https://scholar.google.es/citations?user=_6U9WMcAAAAJ&hl=es&oi=ao) (cimmino@fi.upm.es) and [Raúl García Castro](http://garcia-castro.com/) (rgarcia@fi.upm.es) at the [Universidad Politécnica de Madrid](https://www.upm.es/) in the research group [Ontology Engineering Group](https://oeg.fi.upm.es/).
+
