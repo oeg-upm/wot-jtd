@@ -1,5 +1,5 @@
 # Java API for Thing Descriptions of WoT (JDTs)
-[![Version](https://img.shields.io/badge/Version-0.2.1-orange)](https://github.com/oeg-upm/wot-jtd/releases)] [![Maven Central](https://img.shields.io/badge/Maven%20Central-v0.2.1-green)](https://search.maven.org/search?q=g:%22es.upm.fi.oeg%22%20AND%20a:%22wot-jtd%22) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![GitHub stars](https://img.shields.io/github/stars/Naereen/StrapDown.js.svg?style=social&label=Star&maxAge=2592000)](https://github.com/oeg-upm/wot-jtd/stargazers)
+[![Version](https://img.shields.io/badge/Version-0.2.2-orange)](https://github.com/oeg-upm/wot-jtd/releases)] [![Maven Central](https://img.shields.io/badge/Maven%20Central-v0.2.2-green)](https://search.maven.org/search?q=g:%22es.upm.fi.oeg%22%20AND%20a:%22wot-jtd%22) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![GitHub stars](https://img.shields.io/github/stars/Naereen/StrapDown.js.svg?style=social&label=Star&maxAge=2592000)](https://github.com/oeg-upm/wot-jtd/stargazers)
 
 The JDT is an ORM implementation of the current [Thing Description](https://www.w3.org/TR/wot-thing-description/) model standardised by the [W3C Web of Things group](https://www.w3.org/WoT/). The current features are:
  * Serialise:
@@ -11,8 +11,9 @@ The JDT is an ORM implementation of the current [Thing Description](https://www.
 	 * Translate a set of RDF triples into its equivalent JSON-LD framed document
  * Validation 
 	 * Validate a JTD using [SHACL shapes](https://www.w3.org/TR/shacl/)
-	 * Validate a JTD using [JSON schema](https://json-schema.org/) **(coming soon)**
-	 * Validate a JTD according to the [restrictions specified in the standard](https://www.w3.org/TR/wot-thing-description/) **(coming soon)**
+	 * Validate a JTD using [JSON schema](https://json-schema.org/)  **(coming soon)**
+	 * Validate a JTD according to the [restrictions specified in the standard](https://www.w3.org/TR/wot-thing-description/)  **(coming soon)**
+
 
 If you have any feedback or feature suggestion, please let us know posting an issue with the label <span style="color:#EFA914">**feedback**</span>
 
@@ -41,16 +42,16 @@ Import the JDTs library as a maven dependency, **be sure to specify the latest v
 <dependency>
   <groupId>es.upm.fi.oeg</groupId>
   <artifactId>wot-jtd</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
 </dependency>
 ``` 
 
 Alternatively, the dependency can be installed manually. First, download the latest jar from the [releases section](), and then install the dependency as follows (**be sure to specify the latest version**):
 ````
-mvn install:install-file -Dfile=wot-jtd.jar -DgroupId=es.upm.fi.oeg -DartifactId=wot-jtd -Dversion=0.2.1 -Dpackaging=jar
+mvn install:install-file -Dfile=wot-jtd.jar -DgroupId=es.upm.fi.oeg -DartifactId=wot-jtd -Dversion=0.2.2 -Dpackaging=jar
 ````
 
-Check our [Maven Central Repository page](https://search.maven.org/artifact/es.upm.fi.oeg/wot-jtd/0.2.1/jar) to discover other installation options like Gradle Groovy or Kotlin, Scala, and others. 
+Check our [Maven Central Repository page](https://search.maven.org/artifact/es.upm.fi.oeg/wot-jtd/0.2.2/jar) to discover other installation options like Gradle Groovy or Kotlin, Scala, and others. 
 
 ## Model
 
@@ -157,6 +158,7 @@ ValidationReport shapeReport = JTD.validateWithShape(thing, shapesGraph);
 
 ##### Using JSON schema (*comming soon*)
 ##### Using restrictions in the model (*comming soon*)
+
 
 ### Support or Contact
 WoT-JTD was created by [Andrea Cimmino](https://scholar.google.es/citations?user=_6U9WMcAAAAJ&hl=es&oi=ao) (cimmino@fi.upm.es) and [Raúl García Castro](http://garcia-castro.com/) (rgarcia@fi.upm.es) at the [Universidad Politécnica de Madrid](https://www.upm.es/) in the research group [Ontology Engineering Group](https://oeg.fi.upm.es/).

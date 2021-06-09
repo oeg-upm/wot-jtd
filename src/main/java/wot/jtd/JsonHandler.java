@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -92,7 +93,9 @@ public class JsonHandler {
 	
 	private static void removeIdentifier(JsonObject json, JsonElement element, String key) {
 		Boolean isURN = URN_PATTERN.matcher(element.getAsString()).matches();
-		Boolean isUUID = isUUID(element.getAsString());
+		try{
+			Boolean isUUID = isUUID(element.getAsString());
+		
 		if(isURN && JTD.getRemoveNestedURNIds()) {
 			json.remove(key);
 		}else if(isUUID && JTD.getRemoveNestedUUIds()) {
@@ -100,18 +103,27 @@ public class JsonHandler {
 		}else if(!isURN && !isUUID){
 			json.remove(key);
 		}
+		}catch(Exception e) {
+			System.out.println("the error was given by: "+element.getAsString());
+		}
 	}
 	
 	
 	private static final Pattern URN_PATTERN = Pattern.compile(
 	        "^urn:[a-z0-9][a-z0-9-]{0,31}:([a-z0-9()+,\\-.:=@;$_!*']|%[0-9a-f]{2})+/?.*$",
 	        Pattern.CASE_INSENSITIVE);
+	private static final Pattern UUID_PATTERN = Pattern.compile("[a-f0-9\\-]{36}");
 	
 	private static boolean isUUID(String uri) {
 		Boolean isUUID = false;
 		try {
-			UUID.fromString(uri);
-			isUUID = true;
+			Matcher extracted = UUID_PATTERN.matcher(uri);
+			// TODO: extract UUIds code
+			if(extracted.find()){
+				UUID.fromString(extracted.group());
+				isUUID = true;
+			}
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
