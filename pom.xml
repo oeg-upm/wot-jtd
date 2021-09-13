@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.upm.fi.oeg</groupId>
   <artifactId>wot-jtd</artifactId>
-  <version>0.2.2</version>
+  <version>0.2.8</version>
   <url>https://oeg-upm.github.io/wot-jtd</url>
   <name>Java Thing Description API</name>
   <description>This API aims at assisting developers for handling WoT Thing Descriptions, providing special support for RDF</description>
@@ -215,11 +215,29 @@
 	<dependency>
 	  <groupId>es.upm.fi.oeg</groupId>
 	  <artifactId>kehio</artifactId>
-	  <version>0.1.0</version>
+	  <version>0.1.3</version>
+	</dependency>
+	
+		<dependency>
+		    <groupId>com.github.java-json-tools</groupId>
+		    <artifactId>json-patch</artifactId>
+		    <version>1.11</version>
+		</dependency>
+	
+	<dependency>
+	    <groupId>com.github.everit-org.json-schema</groupId>
+	    <artifactId>org.everit.json.schema</artifactId>
+	    <version>1.12.3</version>
 	</dependency>
 	
   </dependencies>
   
+  <repositories>
+	    <repository>
+	        <id>jitpack.io</id>
+	        <url>https://jitpack.io</url>
+	    </repository>
+	</repositories>
   
 
 
