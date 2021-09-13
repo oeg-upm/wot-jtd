@@ -50,11 +50,42 @@ public class RdfHandler {
 		context.put("dct","http://purl.org/dc/terms/");
 		context.put("schema","http://schema.org/");
 		context.put("rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		context.put("", JTD.getDefaultRdfNamespace());
 	}
 	
 	// -- Deserialisation methods
 	
+	private static final String SECURITY_KEY = "security";
+	
+	private static final String fixSecurity(Thing thing, String security) {
+		StringBuilder builder = new StringBuilder();
+		if(security!=null && thing.getId()!=null && !security.startsWith(thing.getId())) {
+			builder.append(thing.getId());
+			if(!builder.toString().endsWith("/"))
+				builder.append("/");
+			builder.append(security);
+			return builder.toString();
+		}
+		return security;
+	}
+	
+	private static final String unfixSecurity(String id, String security) {
+		StringBuilder builder = new StringBuilder();
+		if(security!=null && id!=null && security.startsWith(id)) {
+			builder.append(id);
+			if(!builder.toString().endsWith("/"))
+				builder.append("/");
+			return security.replace(builder.toString(), "");
+		}
+		return security;
+	}
+	
 	public static Model toRDF(Thing thing) throws IllegalArgumentException, IllegalAccessException, ClassNotFoundException, URISyntaxException, IOException, SchemaValidationException {
+		List<String> newSecurity = new ArrayList<>();
+		if(!thing.getSecurity().isEmpty()) {
+			thing.getSecurity().stream().forEach(entry -> newSecurity.add(fixSecurity(thing, entry)));
+			thing.setSecurity(newSecurity);
+		}
 		// Extract context
 		JsonObject thingJson = JTD.toJson(thing);
 		JsonElement contextAbstractElement = thingJson.get(CONTEXT_TAG);		
@@ -70,7 +101,6 @@ public class RdfHandler {
 		Model model = Kehio.deserializeClass(thing, prefixes);
 		if(JTD.getIncludeDefaultLanguageInRDF() && defaultLanguage!=null)
 			addLanguageToModel(model, defaultLanguage);
-		
 		return model;
 	}
 	
@@ -117,7 +147,7 @@ public class RdfHandler {
 		List<Resource> thingSubjectsWithSecurity = model.listSubjectsWithProperty(ResourceFactory.createProperty("https://www.w3.org/2019/wot/td#hasSecurityConfiguration")).toList();
 		List<Resource> thingSubjects = model.listSubjectsWithProperty(ResourceFactory.createProperty("https://www.w3.org/2019/wot/td#securityDefinitions")).toList();
 		thingSubjects.retainAll(thingSubjectsWithSecurity);
-		
+
 		if(thingSubjects.isEmpty()) {
 			throw new SchemaValidationException("Provided RDF data lacks URIs that are Things, subjects with mandatory properties <https://www.w3.org/2019/wot/td#hasSecurityConfiguration> and/or <https://www.w3.org/2019/wot/td#securityDefinitions> are missing");
 		}else {
@@ -181,15 +211,21 @@ public class RdfHandler {
 					tmpThing.setTitle(tmpThing.getTitles().values().iterator().next());
 				}
 			}
-			if(tmpThing!=null) {
-				thing = Thing.fromJson(tmpThing.toJson());
+		
+			thing = Thing.fromJson(tmpThing.toJson());
+			List<String> newSecurity = new ArrayList<>();
+			String id = thing.getId();
+			if(thing.getSecurity()!=null && !thing.getSecurity().isEmpty()) {
+				thing.getSecurity().stream().forEach(entry -> newSecurity.add(unfixSecurity(id, entry)));
+				thing.setSecurity(newSecurity);
 			}
-			
+			thing.setId(thingSubject.toString());
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
 	
+		
 		return thing;
 	}
 	
