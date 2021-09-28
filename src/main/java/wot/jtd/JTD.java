@@ -12,8 +12,6 @@ import org.apache.jena.shacl.ShaclValidator;
 import org.apache.jena.shacl.Shapes;
 import org.apache.jena.shacl.ValidationReport;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.github.fge.jsonpatch.JsonPatchException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -26,10 +24,10 @@ public class JTD {
 	private static Boolean removeNestedURNIds = false;
 	private static Boolean removeNestedUUIds = true;
 	private static Boolean includeDefaultLanguageInRDF = false;
-	private static String defaultRdfNamespace = "https://oeg-upm.github.io/wot-jtd/";
 	private static List<String> arrayCompactKeys = new CopyOnWriteArrayList<>();
 	public static final boolean NORMALIZE_SECURITY_DEFINITIONS_SCHEMES = true;
 	public static final Pattern SECURITY_DEFINITION_SCHEMES_PATTERN = Pattern.compile("^[a-z0-9]+\\_sc$");
+	
 	static {
 		arrayCompactKeys.add(Vocabulary.SCOPES); 
 		arrayCompactKeys.add(Vocabulary.OP); 
@@ -52,24 +50,11 @@ public class JTD {
 	public static void setArrayCompactKey(String key) {
 		arrayCompactKeys.add(key); 
 	}
-	public static void removeArrayCompactKey(String key) {
-		arrayCompactKeys.remove(key); 
-	}
 	
 	// -- getters and setters
 	
-	
-	
 	public static Boolean getDefaultValues() {
 		return defaultValues;
-	}
-
-	public static String getDefaultRdfNamespace() {
-		return defaultRdfNamespace;
-	}
-
-	public static void setDefaultRdfNamespace(String defaultRdfNamespace) {
-		JTD.defaultRdfNamespace = defaultRdfNamespace;
 	}
 
 	public static void setDefaultValues(Boolean defaultValues) {
@@ -112,13 +97,9 @@ public class JTD {
 	}
 	
 	public static JsonObject toJson(Object object) throws JsonProcessingException {
-		return JsonHandler.toJson(object); 
+		return JsonHandler.toJson(object);
 	}
-
-	public static Thing updateJsonThingPartially(Thing thing, JsonObject partialUpdate) throws IOException, JsonPatchException {
-		JsonNode node = JsonHandler.updateJsonThingPartially(thing, partialUpdate);
-		return (Thing) JTD.instantiateFromJson(JTD.parseJson(node.toString()).deepCopy(), Thing.class);
-	}
+	
 
 	// -- RDF methods
 	

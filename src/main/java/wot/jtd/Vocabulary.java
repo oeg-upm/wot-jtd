@@ -11,8 +11,6 @@ public class Vocabulary {
 	public static final String JSONLD_ID = "@id";
 	public static final String JSONLD_TYPE_ALIAS = "type";
 	
-	public static final String JSONLD_REGISTRATION_ALIAS = "registration";
-	
 	public static final String STATUS_CODE_NUMBER = "htv:statusCodeNumber";
 	public static final String STATUS_CODE_VALUE = "htv:statusCodeValue";
 	public static final String METHOD_NAME = "htv:methodName";

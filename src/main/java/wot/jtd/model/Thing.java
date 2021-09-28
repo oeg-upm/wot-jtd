@@ -24,7 +24,6 @@ import kehio.annotations.RdfObjectGroup;
 import kehio.annotations.RdfUrlMap;
 import wot.jtd.JTD;
 import wot.jtd.Vocabulary;
-import wot.jtd.model.directory.RegistrationInformation;
 import wot.jtd.model.interactions.ActionAffordance;
 import wot.jtd.model.interactions.EventAffordance;
 import wot.jtd.model.interactions.PropertyAffordance;
@@ -39,6 +38,7 @@ import wot.jtd.model.schemas.security.SecurityScheme;
 public class Thing extends AbstractRdfObject{
 	
 	// -- Attributes
+	
 	@JsonRawValue
 	@NotEmpty(message="The value of @context must not be empty, it can be either a URI or an array cointatinig URIs or JSONs")
 	@JsonProperty(Vocabulary.JSONLD_CONTEXT)
@@ -72,7 +72,6 @@ public class Thing extends AbstractRdfObject{
 	@RdfObject("https://www.w3.org/2019/wot/td#base")
 	protected URI base;
 	
-	
 	@RdfObject("https://www.w3.org/2019/wot/td#hasLink")
 	protected Collection<Link> links;
 	
@@ -97,7 +96,6 @@ public class Thing extends AbstractRdfObject{
 	@RdfObject("https://www.w3.org/2019/wot/td#hasForm")
 	protected Collection<Form> forms;
 	
-	
 	@RdfObjectGroup(value="https://www.w3.org/2019/wot/td#hasPropertyAffordance", key="https://www.w3.org/2019/wot/td#name")
 	protected Map<String,PropertyAffordance> properties;
 	
@@ -107,9 +105,6 @@ public class Thing extends AbstractRdfObject{
 	@RdfObjectGroup(value="https://www.w3.org/2019/wot/td#hasEventAffordance", key="https://www.w3.org/2019/wot/td#name")
 	protected Map<String,EventAffordance> events;
 	
-	@JsonProperty(Vocabulary.JSONLD_REGISTRATION_ALIAS)
-	@RdfObject("https://www.w3.org/2021/wot/discovery#hasRegistrationInformation")
-	protected RegistrationInformation registrationInformation;
 	
 	// -- Getters & Setters 
 	
@@ -266,16 +261,10 @@ public class Thing extends AbstractRdfObject{
 		this.events = events;
 	}
 
-	public RegistrationInformation getRegistrationInformation() {
-		return registrationInformation;
-	}
-
-	public void setRegistrationInformation(RegistrationInformation registrationInformation) {
-		this.registrationInformation = registrationInformation;
-	}
-
-	// -- HasCode and equals
 	
+	// -- HasCode and equals
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -303,7 +292,6 @@ public class Thing extends AbstractRdfObject{
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((titles == null) ? 0 : titles.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
-		result = prime * result + ((registrationInformation == null) ? 0 : registrationInformation.hashCode());
 		return result;
 	}
 
@@ -336,7 +324,7 @@ public class Thing extends AbstractRdfObject{
 		sameClass &= sameAttribute(this.getModified(), other.getModified());
 		sameClass &= sameAttribute(this.getSupport(), other.getSupport());
 		sameClass &= sameAttribute(this.getVersion(), other.getVersion());
-		sameClass &= sameAttribute(this.getRegistrationInformation(), other.getRegistrationInformation());
+		
 		return sameClass;
 	}
 	
@@ -361,6 +349,8 @@ public class Thing extends AbstractRdfObject{
 		public static Thing fromJson(JsonObject json) throws IOException {
 			return (Thing) JTD.instantiateFromJson(json.deepCopy(), Thing.class);
 		}
+	
+
 	
 	
 	

@@ -29,9 +29,7 @@ public class AbstractRdfObject {
 	protected String id;
 	
 	@RdfContainer(ignore= {"https://www.w3.org/2019/wot/td#name", "https://www.w3.org/2019/wot/json-schema#propertyName"}, 
-			prefixes= {@RdfUrlMap(key="htv", value="http://www.w3.org/2011/http#"),
-					   @RdfUrlMap(key="", value="https://oeg-upm.github.io/wot-jtd/")
-				},
+			prefixes= {@RdfUrlMap(key="htv", value="http://www.w3.org/2011/http#")},
 			aliases={ //@RdfUrlMap(key="type", value="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
 					  @RdfUrlMap(key="@type", value="http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
 			},

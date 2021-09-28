@@ -11,16 +11,11 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonpatch.JsonPatchException;
-import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-
-import wot.jtd.model.Thing;
 
 /**
  * This class
@@ -37,22 +32,12 @@ public class JsonHandler {
 	
 	// -- Protected Methods
 	
-	protected static JsonNode updateJsonThingPartially(Thing thing, JsonObject partialUpdate) throws IOException, JsonPatchException {
-		JsonObject thingJson = thing.toJson();
-		
-		JsonNode partialJson = OBJECT_MAPPER.readTree(partialUpdate.toString());
-		JsonNode existingThingNode = OBJECT_MAPPER.readTree(thingJson.toString());
-		JsonMergePatch patch = JsonMergePatch.fromJson(partialJson);
-		return  patch.apply(existingThingNode);
-	}
-	
 	protected static Object instantiateFromJson(JsonObject json, Class<?> clazz) throws IOException {
 		JsonObject newJson = json.deepCopy();
 		expandArrays(newJson);
-	
 		if(!JTD.getRemoveNestedURNIds())
 			removeNestedIds(newJson, true);
-
+		
 		return OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).readValue(newJson.toString().getBytes(), clazz);
 	}
 	
@@ -60,17 +45,13 @@ public class JsonHandler {
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonStr = mapper.writeValueAsString(object);
 		JsonObject jsonObject = JTD.parseJson(jsonStr);
-		
 		compactArrays(jsonObject);
 		if(!JTD.getRemoveNestedURNIds())
-			removeNestedIds(jsonObject, true);
-		// fix security removing id
-		
+			removeNestedIds(jsonObject, false);
 		return jsonObject;
 	}
 	
 	// -- Methods
-	
 	
 	public static void compactArrays(JsonObject json) {
 			Set<String> keys = new HashSet<>(json.keySet());
