@@ -3,7 +3,6 @@ package wot.jtd.model.interactions;
 import java.util.Collection;
 import java.util.Map;
 import javax.validation.constraints.NotEmpty;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import kehio.annotations.RdfDatatype;
@@ -21,7 +20,7 @@ import wot.jtd.model.schemas.data.DataSchema;
 public class PropertyAffordance extends DataSchema {
 
 	// -- Attributes: from InteractionAffordance
-	
+
 	@RdfObject("https://www.w3.org/2019/wot/td#hasForm")
 	@NotEmpty(message="'forms' in any InteractionAffordance (PropertyAffordance, ActionAffordance, or EventAffordance) must not be empty")
 	protected Collection<Form> forms;
